@@ -32,7 +32,7 @@
 				 $.post("https://customer.imotstudio.net/cabi/api/AdminLogin",{ Account:uname, Password:pwd  }).done(function(res){
 					 var r=JSON.parse(res);
 					 if(r.code=="203"){
-						 location.href="index1.html";
+						 location.href="manage.html";
 					 }else{
 						 $("#err_wrap").addClass('d-inline-flex').find('label').text('您输入的用户名或密码错误');
 					 }
@@ -97,7 +97,7 @@
             </div>
           </div>
           <div class="col-lg-6 login-half-bg d-flex flex-row">
-            <p class="text-white font-weight-medium text-center flex-grow align-self-end">Copyright &copy; 2020  All rights reserved.</p>
+            <p class="text-white font-weight-medium text-center flex-grow align-self-end">Copyright &copy; 2020 CABI All rights reserved.</p>
           </div>
         </div>
       </div>

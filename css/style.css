@@ -20990,7 +20990,7 @@ dl li {
 /* === Landing screens === */
 /* Auth */
 .auth .login-half-bg {
-  background: url("../images/auth/login-bg.jpg");
+  background: url("../images/auth/login-bg.png");
   background-size: cover;
 }
 
@@ -21404,7 +21404,7 @@ dl li {
 }
 
 .navbar .navbar-brand-wrapper .navbar-brand-inner-wrapper .navbar-brand img {
-  width: calc(257px - 150px);
+ /* width: calc(257px - 150px);*/
   max-width: 100%;
   height: 34px;
   margin: auto;
@@ -21921,3 +21921,19 @@ dl li {
 
 
 
+
+#footer_rights {
+	font-size: 0.875rem; 
+	margin: .5rem 0;
+	text-align: center;
+	padding: 1rem 0;
+	display:inline-flex;
+	flex-direction: column;
+	justify-content: center;
+	align-content: center;
+}
+
+#footer_rights a{
+	margin-top: 0.5rem;
+	font-size: 0.8rem;
+}
