@@ -239,9 +239,23 @@
 						$("#avatar").click(function(){
 							$("#avatar_select").click();
 						});
+						
+						$("#btn_save").click(function(){
+							var cas=$("#cropbox").cropper('getCroppedCanvas');
+							var base64url=cas.toDataURL('image/png');
+							$("#prev_img").attr("src",base64url);
+							$.closePopLayer();
+							$.showPopLayer({
+								target:"prev_wrap"	
+							})
+							
+							
+						});
+						
 						$("#avatar_select").change(function(){
 							var size = 2 * 1024 * 1024;
 							var file = this.files[0];
+							console.log(file);
 							var fileName = file.name;
 							var fileSize = file.size;
 							var fileType = fileName.substring(fileName.lastIndexOf('.'), fileName.length).toLowerCase();
@@ -250,7 +264,7 @@
 								return;
 							}
 							if (fileSize > size) {
-								alert("上传失败，请上传3MB以内的图片。");
+								alert("上传失败，请上传2MB以内的图片。");
 								return;
 							}
 							var reader = new FileReader();
@@ -258,26 +272,19 @@
 							reader.onload = function () {
 								 // 通过 reader.result 来访问生成的 DataURL
 								var url = reader.result;
+								console.log(url);
 								$("#cropbox,#preview").attr("src", url);
 								initCropper();
 								$.showPopLayer({
 									target: "uppic_wrap",
 									animate: false,
 									onPop: function () {
-										/*if (jcrop_api != null) {
-											jcrop_api.setImage(url, function () {
-												var bb = this.getBounds();
-												var bWidth = Number(bb[0]) / 2;
-												var bHeight = Number(bb[1]) / 2;
-												this.setSelect([0, 0, bWidth, bHeight]);
-												var ss = this.getWidgetSize();
-												var aheight = (300 - Number(ss[1])) / 2 + "px";
-												$(".jcrop-holder").css({ "margin": aheight + " auto" });
-											})
-										}*/
+
 									},
 									onClose: function () {
+										console.log("aaa");
 										$('#avatar_select').prop('value', '');
+										$('#cropbox').cropper('destroy');
 									}
 								});
 							}
@@ -287,7 +294,8 @@
 							$("#cropbox").cropper({
 								aspectRatio: 71 / 100,
 								viewMode:1,
-							
+								minCropBoxWidth:71,
+								minCropBoxHeight:100,
 								preview:"#avatat_prev"
 							});
 						}

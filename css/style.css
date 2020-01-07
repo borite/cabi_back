@@ -21943,10 +21943,10 @@ dl li {
 /*pic_pop_layer*/
 
 .up_header {
-    height: 40px;
     line-height: 40px;
     color: #767676;
     font-size: 1em;
+	padding-bottom: 20px;
 }
 
 #uppic_wrap {
@@ -21989,8 +21989,8 @@ dl li {
 }
 
 #avatat_prev {
-    width: 142px;
-    height: 200px;
+    width: 177.5px;
+    height: 250px;
     display: block;
     background-color: #ccc;
 	overflow: hidden;
@@ -22005,7 +22005,8 @@ dl li {
     background-color: #fff;
     display: none;
     border: 2px solid #767676;
-    padding: 10px 20px 40px 20px;
+    padding: 20px;
+	padding-top: 10px;
     box-sizing: content-box;
 }
 
@@ -22015,12 +22016,14 @@ dl li {
     justify-content: space-between;
 	height: 400px;
 	width: 100%;
+	box-sizing: content-box;
 }
 #prev_img{
 	display: block;
 	width: 284px;
 	height: auto;
-	margin-top: 20px;
+	
+	box-sizing: content-box;
 }
 
 
@@ -22028,7 +22031,6 @@ dl li {
 #text_area{
 	width: 320px;
 	height: 380px;
-	margin-top: 20px;
 	display: flex;
 	flex-direction: column;
 	padding-top: 10px;
