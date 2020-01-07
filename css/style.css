@@ -19900,7 +19900,7 @@ code {
   margin-bottom: 1.5rem;
   text-transform: uppercase;
   font-size: .875rem;
-  font-weight: bold;
+  font-weight: bold; line-height: 1.2rem;
 }
 
 .card .card-subtitle {
@@ -21937,3 +21937,100 @@ dl li {
 	margin-top: 0.5rem;
 	font-size: 0.8rem;
 }
+
+
+
+/*pic_pop_layer*/
+
+.up_header {
+    height: 40px;
+    line-height: 40px;
+    color: #767676;
+    font-size: 1em;
+}
+
+#uppic_wrap {
+    width: 640px;
+    background-color: #fff;
+    display: none;
+    border: 2px solid #767676;
+    padding: 10px 20px 40px 20px;
+    box-sizing: content-box;
+}
+
+
+
+#pop_img_wrap {
+    width: 400px;
+    height: 300px;
+    margin-top: 10px;
+    float: left;
+    background-color: #d9d9d9;
+}
+
+.img-prev-wrap {
+    width: 200px;
+    height: 300px;
+    float: right;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#btn_save {
+    width: 200px;
+    height: 40px;
+    line-height: 40px;
+    background-color: #df3939;
+    color: #fff;
+    text-align: center;
+    cursor: pointer;
+}
+
+#avatat_prev {
+    width: 142px;
+    height: 200px;
+    display: block;
+    background-color: #ccc;
+	overflow: hidden;
+}
+
+#avatar_select{
+	display: none;
+}
+
+#prev_wrap{
+	width: 640px;
+    background-color: #fff;
+    display: none;
+    border: 2px solid #767676;
+    padding: 10px 20px 40px 20px;
+    box-sizing: content-box;
+}
+
+/*照片预览提示框*/
+#img_wrap{
+	display: flex;
+    justify-content: space-between;
+	height: 400px;
+	width: 100%;
+}
+#prev_img{
+	display: block;
+	width: 284px;
+	height: auto;
+	margin-top: 20px;
+}
+
+
+
+#text_area{
+	width: 320px;
+	height: 380px;
+	margin-top: 20px;
+	display: flex;
+	flex-direction: column;
+	padding-top: 10px;
+}
+

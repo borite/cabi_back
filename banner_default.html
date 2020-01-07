@@ -21,7 +21,9 @@
 	  <script src="vendors/base/vendor.bundle.base.js"></script>
 	  <script src="js/common.js"></script>
 	  <!-- InstanceBeginEditable name="head" -->
-	 
+	  <link rel="stylesheet" href="css/cropper.min.css">
+	  <script src="js/jquery.poplayer.js"></script>
+	  <script src="js/cropper.min.js"></script>
 	  <!-- InstanceEndEditable -->
 	</head>
 
@@ -134,7 +136,8 @@
 							<div class="card-body">
 							  <h4 class="card-title d-flex justify-content-between align-items-center">
 								  <div>首页轮播图</div>
-								  <a href="#" class="btn btn-primary btn-sm">添加轮播图</a>
+								  <a id="avatar" class="btn btn-primary btn-sm text-white">添加轮播图</a>
+								  <input id="avatar_select" type="file" accept="image/gif,image/png,image/jpeg,image/bmp">
 							  </h4>
 							  <p class="card-description">
 								首页轮播图为察必小程序首页展示的轮播图，最多可以展示5张
@@ -144,8 +147,23 @@
 								  <div class="card mr-3 text-center" style="width: 16rem;">
 									<img src="http://cabiproject.oss-cn-huhehaote.aliyuncs.com/CABIIMG/BannerIMG/Banner200103040731013934.jpg" class="card-img-top" alt="...">
 									 <div class="card-body px-1">
+										<h5 class="card-title">察必巴拉巴拉巴拉山东矿机合肥市抠脚</h5>
+										<a href="#" class="btn btn-danger btn-sm text-small">删除</a>
+									 </div>
+								  </div>
+								  
+								  <div class="card mr-3 text-center" style="width: 16rem;">
+									<img src="http://cabiproject.oss-cn-huhehaote.aliyuncs.com/CABIIMG/BannerIMG/Banner200103040731013934.jpg" class="card-img-top" alt="...">
+									 <div class="card-body px-1">
+										<h5 class="card-title">察必巴拉巴拉巴拉山东矿机合肥市抠脚</h5>
+										<a href="#" class="btn btn-danger btn-sm text-small">删除</a>
+									 </div>
+								  </div>
+								  <div class="card mr-3 text-center" style="width: 16rem;">
+									<img src="http://cabiproject.oss-cn-huhehaote.aliyuncs.com/CABIIMG/BannerIMG/Banner200103040731013934.jpg" class="card-img-top" alt="...">
+									 <div class="card-body px-1">
 										<h5 class="card-title">察必巴拉巴拉巴拉</h5>
-										<a href="#" class="btn btn-danger btn-sm text-small">删除这张</a>
+										<a href="#" class="btn btn-danger btn-sm text-small">删除</a>
 									 </div>
 								  </div>
 								  
@@ -153,29 +171,14 @@
 									<img src="http://cabiproject.oss-cn-huhehaote.aliyuncs.com/CABIIMG/BannerIMG/Banner200103040731013934.jpg" class="card-img-top" alt="...">
 									 <div class="card-body px-1">
 										<h5 class="card-title">察必巴拉巴拉巴拉</h5>
-										<a href="#" class="btn btn-danger btn-sm text-small">删除这张</a>
+										<a href="#" class="btn btn-danger btn-sm text-small">删除</a>
 									 </div>
 								  </div>
 								  <div class="card mr-3 text-center" style="width: 16rem;">
 									<img src="http://cabiproject.oss-cn-huhehaote.aliyuncs.com/CABIIMG/BannerIMG/Banner200103040731013934.jpg" class="card-img-top" alt="...">
 									 <div class="card-body px-1">
 										<h5 class="card-title">察必巴拉巴拉巴拉</h5>
-										<a href="#" class="btn btn-danger btn-sm text-small">删除这张</a>
-									 </div>
-								  </div>
-								  
-								  <div class="card mr-3 text-center" style="width: 16rem;">
-									<img src="http://cabiproject.oss-cn-huhehaote.aliyuncs.com/CABIIMG/BannerIMG/Banner200103040731013934.jpg" class="card-img-top" alt="...">
-									 <div class="card-body px-1">
-										<h5 class="card-title">察必巴拉巴拉巴拉</h5>
-										<a href="#" class="btn btn-danger btn-sm text-small">删除这张</a>
-									 </div>
-								  </div>
-								  <div class="card mr-3 text-center" style="width: 16rem;">
-									<img src="http://cabiproject.oss-cn-huhehaote.aliyuncs.com/CABIIMG/BannerIMG/Banner200103040731013934.jpg" class="card-img-top" alt="...">
-									 <div class="card-body px-1">
-										<h5 class="card-title">察必巴拉巴拉巴拉</h5>
-										<a href="#" class="btn btn-danger btn-sm text-small">删除这张</a>
+										<a href="#" class="btn btn-danger btn-sm text-small">删除</a>
 									 </div>
 								  </div>
 							  </div>							 
@@ -188,6 +191,111 @@
 
 					</div>
 					
+					
+					<!--头像上传弹出层-->
+
+					<div id="uppic_wrap" class="clearfix">
+						<header class="up_header clearfix">
+							<span style="float: left;">轮播图上传
+								<i style="font-style:normal; font-size:12px;">(为保证图片呈现效果，对选取框限制了比例，请使用大于<b>710x1000</b>竖版尺寸图片,最大2MB)</i>
+							</span>
+							<span style="float: right; cursor: pointer;" onclick="$.closePopLayer();">关闭</span>
+						</header>
+						<div id="pop_img_wrap">
+							<img id="cropbox" />
+						</div>
+
+						<div class="img-prev-wrap">
+							<div id="avatat_prev">
+								<!--<img id="preview" class="aaa" />-->
+							</div>
+							<div id="btn_save">保存</div>
+						</div>
+
+					</div>
+					
+					
+					<div id="prev_wrap">
+						<header class="up_header clearfix">
+							<span style="float: left;">轮播图预览<i style="font-style:normal; font-size:12px;">(图片最终将以<b>710x1000</b>竖版呈现,当前有缩放不是最终质量)</i></span>
+							<span style="float: right; cursor: pointer;" onclick="$.closePopLayer();">关闭</span>
+						</header>
+						
+						<div id="img_wrap">
+							<img id="prev_img" src="" />
+							<div id="text_area">
+								<div class="form-group">
+								  <label for="exampleInputName1">标题文字</label>
+								  <input type="text" class="form-control" id="ipt_text" placeholder="标题文字,最多16个字符">
+								</div>
+								<button id="btn_confirm" class="btn btn-primary btn-lg btn-block">确定上传</button>
+							</div>
+						</div>
+
+					</div>
+					
+					
+					<script>
+						$("#avatar").click(function(){
+							$("#avatar_select").click();
+						});
+						$("#avatar_select").change(function(){
+							var size = 2 * 1024 * 1024;
+							var file = this.files[0];
+							var fileName = file.name;
+							var fileSize = file.size;
+							var fileType = fileName.substring(fileName.lastIndexOf('.'), fileName.length).toLowerCase();
+							if (fileType != '.gif' && fileType != '.jpeg' && fileType != '.png' && fileType != '.jpg') {
+								alert("上传失败，请上传jpg,png格式的图片");
+								return;
+							}
+							if (fileSize > size) {
+								alert("上传失败，请上传3MB以内的图片。");
+								return;
+							}
+							var reader = new FileReader();
+							reader.readAsDataURL(file);
+							reader.onload = function () {
+								 // 通过 reader.result 来访问生成的 DataURL
+								var url = reader.result;
+								$("#cropbox,#preview").attr("src", url);
+								initCropper();
+								$.showPopLayer({
+									target: "uppic_wrap",
+									animate: false,
+									onPop: function () {
+										/*if (jcrop_api != null) {
+											jcrop_api.setImage(url, function () {
+												var bb = this.getBounds();
+												var bWidth = Number(bb[0]) / 2;
+												var bHeight = Number(bb[1]) / 2;
+												this.setSelect([0, 0, bWidth, bHeight]);
+												var ss = this.getWidgetSize();
+												var aheight = (300 - Number(ss[1])) / 2 + "px";
+												$(".jcrop-holder").css({ "margin": aheight + " auto" });
+											})
+										}*/
+									},
+									onClose: function () {
+										$('#avatar_select').prop('value', '');
+									}
+								});
+							}
+						})
+						
+						function initCropper(){
+							$("#cropbox").cropper({
+								aspectRatio: 71 / 100,
+								viewMode:1,
+							
+								preview:"#avatat_prev"
+							});
+						}
+
+					
+					</script>
+					
+
 					
 					
 					
