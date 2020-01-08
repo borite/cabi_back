@@ -21,7 +21,9 @@
 	  <script src="vendors/base/vendor.bundle.base.js"></script>
 	  <script src="js/common.js"></script>
 	  <!-- InstanceBeginEditable name="head" -->
-	 
+	  <link rel="stylesheet" href="css/cropper.min.css">
+	  <script src="js/jquery.poplayer.js"></script>
+	  <script src="js/cropper.min.js"></script>
 	  <!-- InstanceEndEditable -->
 	</head>
 
@@ -88,7 +90,7 @@
 					</div>
 				  </li>
 				  <li class="nav-item">
-					<a class="nav-link" href="pages/forms/basic_elements.html">
+					<a class="nav-link" href="product_type.html">
 					  <i class="mdi mdi-view-headline menu-icon"></i>
 					  <span class="menu-title">产品系列管理</span>
 					</a>
@@ -128,6 +130,222 @@
 			  <div class="main-panel">
 				<div class="content-wrapper">
 					<!-- InstanceBeginEditable name="ConetentArea" -->
+					<div class="row">
+						<div class="col-md-12 grid-margin stretch-card">
+						  <div class="card">
+							<div class="card-body">
+							  <h4 class="card-title d-flex justify-content-between align-items-center">
+								  <div>察必页轮播图</div>
+								  <a id="avatar" class="btn btn-primary btn-sm text-white">添加轮播图</a>
+								  <input id="avatar_select" type="file" accept="image/gif,image/png,image/jpeg,image/bmp">
+							  </h4>
+							  <p class="card-description m-0">
+								该轮播图为察必小程序察必产品展示页面的轮播图，最多可以展示5张
+							  </p>
+							  
+							  <div id="img_list" class="row m-0">
+								  
+								  <div class="card mr-3 text-center mt-3" style="width: 16rem;">请稍后，正在获取数据...</div>
+
+							  </div>							 
+
+								
+								
+							</div>
+						  </div>
+						</div>
+
+					</div>
+					
+					
+					<!--图片上传弹出层-->
+
+					<div id="uppic_wrap" class="clearfix">
+						<header class="up_header clearfix">
+							<span style="float: left;"><b>轮播图上传</b>
+								<i style="font-style:normal; font-size:12px;">(为保证图片呈现效果，对选取框限制了比例，请使用<b>750x320或大于该尺寸</b>横版图片,最大2MB)</i>
+							</span>
+							<span style="float: right; cursor: pointer;" onclick="$.closePopLayer();">关闭</span>
+						</header>
+						<div id="pop_img_wrap">
+							<img id="cropbox" />
+						</div>
+
+						<div class="img-prev-wrap">
+							<div id="avatat_prev" style="width: 200px; height:100px; ">
+								<!--<img id="preview" class="aaa" />-->
+							</div>
+							<div id="btn_save">保存</div>
+						</div>
+
+					</div>
+					
+					
+					<div id="prev_wrap" style="width: 420px;">
+						<header class="up_header clearfix">
+							<span style="float: left;"><b>轮播图预览</b><i style="font-style:normal; font-size:12px;">(图片最终将以<b>750x320</b>呈现,当前有缩放不是最终质量)</i></span>
+							<span style="float: right; cursor: pointer;" onclick="$.closePopLayer();">关闭</span>
+						</header>
+						
+						<div id="img_wrap" class="flex-column align-items-center justify-content-between" style="height: 260px;">
+							<img id="prev_img" src="" style="width: 420px;" />
+							<button id="btn_confirm" class="btn btn-primary btn-lg btn-block">确定上传</button>
+						</div>
+
+					</div>
+					
+					<script>
+						getBannerList();
+						var fileType='';
+						
+						$("#avatar").click(function(){
+							var ImgCount=localStorage.getItem('CabiImgCount');
+							console.log(ImgCount);
+							if(ImgCount>=5){
+								alert("最多只能上传5张，请先删除现有，再进行上传");
+								return false;
+							}
+							$("#avatar_select").click();
+						});
+						
+						$("#btn_save").click(function(){
+							var cas=$("#cropbox").cropper('getCroppedCanvas');
+							var base64url=cas.toDataURL('image/png');
+							$("#prev_img").attr("src",base64url);
+							$.closePopLayer();
+							$.showPopLayer({
+								target:"prev_wrap",
+								onPop:function(){
+									$("#btn_confirm").click(function(){
+										$(this).text("请稍后...").prop('disabled',true);
+										$.post("https://customer.imotstudio.net/cabi/api/AddBanner",{
+											  "Title": "",
+											  "URL": "",
+											  "IsLocked": false,
+											  "Display": 999,
+											  "type": 2
+										}).then(function(res){
+											var r=JSON.parse(res);
+											if(r.code=="200"){
+												var imgs=new Array();
+												var type=fileType.substring(fileType.lastIndexOf(".")+1);
+												var imgInfo = { ext: type, baseURL: base64url } //分别是：后缀，流文件
+												imgs.push(imgInfo);
+												return $.post("https://customer.imotstudio.net/cabi/api/AddBannerIMG",{
+													imgs:imgs,
+													ID: r.data.ID
+												});
+											}else{
+												alert("出现错误，请联系管理员");
+											}
+
+										}).then(function(res){
+											var r1=JSON.parse(res);
+											if(r1.code=="200"){
+												alert("上传成功");
+												$.closePopLayer();
+												getBannerList();
+											}else{
+
+												alert("上传失败");
+											}
+
+										}).always(function(){
+											$('#btn_confirm').text("确定上传").prop('disabled',false);
+										})
+								})
+							  },
+							  onClose:function(){
+								  $("#ipt_pic_tit").val('');
+								  $("#btn_confirm").off('click');
+							  }
+							});
+						});
+						
+						$("#avatar_select").change(function(){
+							var size = 2 * 1024 * 1024;
+							var file = this.files[0];
+							var fileName = file.name;
+							var fileSize = file.size;
+							fileType = fileName.substring(fileName.lastIndexOf('.'), fileName.length).toLowerCase();
+							if (fileType != '.gif' && fileType != '.jpeg' && fileType != '.png' && fileType != '.jpg') {
+								alert("上传失败，请上传jpg,png格式的图片");
+								return;
+							}
+							if (fileSize > size) {
+								alert("上传失败，请上传2MB以内的图片。");
+								return;
+							}
+							var reader = new FileReader();
+							reader.readAsDataURL(file);
+							reader.onload = function () {
+								 // 通过 reader.result 来访问生成的 DataURL
+								var url = reader.result;
+								$("#cropbox,#preview").attr("src", url);
+								initCropper();
+								$.showPopLayer({
+									target: "uppic_wrap",
+									animate: false,
+									onClose: function () {
+										$('#avatar_select').prop('value', '');
+										$('#cropbox').cropper('destroy');
+									}
+								});
+							}
+						})
+						
+						function initCropper(){
+							$("#cropbox").cropper({
+								aspectRatio: 75 / 32,
+								viewMode:1,
+								minCropBoxWidth:75,
+								minCropBoxHeight:32,
+								preview:"#avatat_prev"
+							});
+						}
+						
+						//获取首页滚动图片
+						function getBannerList(){
+							var d=new Date();
+							$.get("https://customer.imotstudio.net/cabi/api/BannerList",{type:2,ts:d.getTime()}).done(function(res){
+								if(res.Code==200){
+									localStorage.setItem("CabiImgCount",res.Data.length);
+									$("#img_list").empty();
+									if(res.Data.length>0){
+										$.each(res.Data,function(i,o){
+											var h='<div class="card mr-3 text-center mt-3" style="width: 20rem;">\
+												 <img src="'+o.Img+'" class="card-img-top" alt="...">\
+												 <div class="card-body px-1">\
+													<a class="btn btn-danger btn-sm text-small text-white" onclick="del('+o.ID+')">删除</a>\
+												 </div>\
+											   </div>';
+											$("#img_list").append(h);
+										})	
+									}
+								}else{
+									alert("出现错误。请联系管理员");
+								}
+							})
+						}
+						
+						//删除照片
+						function del(imgID){
+							var d=new Date();
+							console.log(imgID);
+							$.post("https://customer.imotstudio.net/cabi/api/RemoveBanner",{ID:imgID}).done(function(res){
+								var dr=JSON.parse(res);
+								console.log(dr);
+								if(dr.code=="200"){
+									alert("删除成功");
+									getBannerList();
+								}
+							})
+						}
+					</script>
+					
+					
+					
+					
 					<!-- InstanceEndEditable -->
 				</div>
 				

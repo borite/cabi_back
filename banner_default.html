@@ -90,7 +90,7 @@
 					</div>
 				  </li>
 				  <li class="nav-item">
-					<a class="nav-link" href="pages/forms/basic_elements.html">
+					<a class="nav-link" href="product_type.html">
 					  <i class="mdi mdi-view-headline menu-icon"></i>
 					  <span class="menu-title">产品系列管理</span>
 					</a>
@@ -139,48 +139,14 @@
 								  <a id="avatar" class="btn btn-primary btn-sm text-white">添加轮播图</a>
 								  <input id="avatar_select" type="file" accept="image/gif,image/png,image/jpeg,image/bmp">
 							  </h4>
-							  <p class="card-description">
+							  <p class="card-description m-0">
 								首页轮播图为察必小程序首页展示的轮播图，最多可以展示5张
 							  </p>
 							  
-							  <div class="row m-0">
-								  <div class="card mr-3 text-center" style="width: 16rem;">
-									<img src="http://cabiproject.oss-cn-huhehaote.aliyuncs.com/CABIIMG/BannerIMG/Banner200103040731013934.jpg" class="card-img-top" alt="...">
-									 <div class="card-body px-1">
-										<h5 class="card-title">察必巴拉巴拉巴拉山东矿机合肥市抠脚</h5>
-										<a href="#" class="btn btn-danger btn-sm text-small">删除</a>
-									 </div>
-								  </div>
+							  <div id="img_list" class="row m-0">
 								  
-								  <div class="card mr-3 text-center" style="width: 16rem;">
-									<img src="http://cabiproject.oss-cn-huhehaote.aliyuncs.com/CABIIMG/BannerIMG/Banner200103040731013934.jpg" class="card-img-top" alt="...">
-									 <div class="card-body px-1">
-										<h5 class="card-title">察必巴拉巴拉巴拉山东矿机合肥市抠脚</h5>
-										<a href="#" class="btn btn-danger btn-sm text-small">删除</a>
-									 </div>
-								  </div>
-								  <div class="card mr-3 text-center" style="width: 16rem;">
-									<img src="http://cabiproject.oss-cn-huhehaote.aliyuncs.com/CABIIMG/BannerIMG/Banner200103040731013934.jpg" class="card-img-top" alt="...">
-									 <div class="card-body px-1">
-										<h5 class="card-title">察必巴拉巴拉巴拉</h5>
-										<a href="#" class="btn btn-danger btn-sm text-small">删除</a>
-									 </div>
-								  </div>
-								  
-								  <div class="card mr-3 text-center" style="width: 16rem;">
-									<img src="http://cabiproject.oss-cn-huhehaote.aliyuncs.com/CABIIMG/BannerIMG/Banner200103040731013934.jpg" class="card-img-top" alt="...">
-									 <div class="card-body px-1">
-										<h5 class="card-title">察必巴拉巴拉巴拉</h5>
-										<a href="#" class="btn btn-danger btn-sm text-small">删除</a>
-									 </div>
-								  </div>
-								  <div class="card mr-3 text-center" style="width: 16rem;">
-									<img src="http://cabiproject.oss-cn-huhehaote.aliyuncs.com/CABIIMG/BannerIMG/Banner200103040731013934.jpg" class="card-img-top" alt="...">
-									 <div class="card-body px-1">
-										<h5 class="card-title">察必巴拉巴拉巴拉</h5>
-										<a href="#" class="btn btn-danger btn-sm text-small">删除</a>
-									 </div>
-								  </div>
+								  <div class="card mr-3 text-center mt-3" style="width: 16rem;">请稍后，正在获取数据...</div>
+
 							  </div>							 
 
 								
@@ -225,8 +191,8 @@
 							<img id="prev_img" src="" />
 							<div id="text_area">
 								<div class="form-group">
-								  <label for="exampleInputName1">标题文字</label>
-								  <input type="text" class="form-control" id="ipt_text" placeholder="标题文字,最多16个字符">
+								  <label for="ipt_pic_tit">标题文字</label>
+								  <input type="text" class="form-control" id="ipt_pic_tit" placeholder="标题文字,最多16个字符">
 								</div>
 								<button id="btn_confirm" class="btn btn-primary btn-lg btn-block">确定上传</button>
 							</div>
@@ -236,7 +202,16 @@
 					
 					
 					<script>
+						getBannerList();
+						var fileType='';
+						
 						$("#avatar").click(function(){
+							var ImgCount=localStorage.getItem('IndexImgCount');
+							console.log(ImgCount);
+							if(ImgCount>=5){
+								alert("首页轮播最多只能上传5张，请先删除现有，再进行上传");
+								return false;
+							}
 							$("#avatar_select").click();
 						});
 						
@@ -246,19 +221,66 @@
 							$("#prev_img").attr("src",base64url);
 							$.closePopLayer();
 							$.showPopLayer({
-								target:"prev_wrap"	
-							})
-							
-							
+								target:"prev_wrap",
+								onPop:function(){
+									$("#btn_confirm").click(function(){
+									var title=$("#ipt_pic_tit").val();
+									if($.trim(title)==""){
+										alert("请输入标题");
+										$("#ipt_pic_tit").val('').focus();
+										return false;
+									} 
+									$(this).text("请稍后...").prop('disabled',true);
+									$.post("https://customer.imotstudio.net/cabi/api/AddBanner",{
+										  "Title": title,
+										  "URL": "",
+										  "IsLocked": false,
+										  "Display": 999,
+										  "type": 1
+									}).then(function(res){
+										var r=JSON.parse(res);
+										if(r.code=="200"){
+											var imgs=new Array();
+											var type=fileType.substring(fileType.lastIndexOf(".")+1);
+											var imgInfo = { ext: type, baseURL: base64url } //分别是：后缀，流文件
+                    						imgs.push(imgInfo);
+											return $.post("https://customer.imotstudio.net/cabi/api/AddBannerIMG",{
+												imgs:imgs,
+												ID: r.data.ID
+											});
+										}else{
+											alert("出现错误，请联系管理员");
+										}
+										
+									}).then(function(res){
+										var r1=JSON.parse(res);
+										if(r1.code=="200"){
+											alert("上传成功");
+											$.closePopLayer();
+											getBannerList();
+										}else{
+											
+											alert("上传失败");
+										}
+										
+									}).always(function(){
+										$('#btn_confirm').text("确定上传").prop('disabled',false);
+									})
+								})
+							  },
+							  onClose:function(){
+								  $("#ipt_pic_tit").val('');
+								  $("#btn_confirm").off('click');
+							  }
+							});
 						});
 						
 						$("#avatar_select").change(function(){
 							var size = 2 * 1024 * 1024;
 							var file = this.files[0];
-							console.log(file);
 							var fileName = file.name;
 							var fileSize = file.size;
-							var fileType = fileName.substring(fileName.lastIndexOf('.'), fileName.length).toLowerCase();
+							fileType = fileName.substring(fileName.lastIndexOf('.'), fileName.length).toLowerCase();
 							if (fileType != '.gif' && fileType != '.jpeg' && fileType != '.png' && fileType != '.jpg') {
 								alert("上传失败，请上传jpg,png格式的图片");
 								return;
@@ -272,17 +294,12 @@
 							reader.onload = function () {
 								 // 通过 reader.result 来访问生成的 DataURL
 								var url = reader.result;
-								console.log(url);
 								$("#cropbox,#preview").attr("src", url);
 								initCropper();
 								$.showPopLayer({
 									target: "uppic_wrap",
 									animate: false,
-									onPop: function () {
-
-									},
 									onClose: function () {
-										console.log("aaa");
 										$('#avatar_select').prop('value', '');
 										$('#cropbox').cropper('destroy');
 									}
@@ -299,8 +316,45 @@
 								preview:"#avatat_prev"
 							});
 						}
-
-					
+						
+						//获取首页滚动图片
+						function getBannerList(){
+							var d=new Date();
+							$.get("https://customer.imotstudio.net/cabi/api/BannerList",{type:1,ts:d.getTime()}).done(function(res){
+								if(res.Code==200){
+									localStorage.setItem("IndexImgCount",res.Data.length);
+									$("#img_list").empty();
+									if(res.Data.length>0){
+										$.each(res.Data,function(i,o){
+											var h='<div class="card mr-3 text-center mt-3" style="width: 16rem;">\
+												 <img src="'+o.Img+'" class="card-img-top" alt="...">\
+												 <div class="card-body px-1">\
+													<h5 class="card-title">'+o.Title+'</h5>\
+													<a class="btn btn-danger btn-sm text-small text-white" onclick="del('+o.ID+')">删除</a>\
+												 </div>\
+											   </div>';
+											$("#img_list").append(h);
+										})	
+									}
+								}else{
+									alert("出现错误。请联系管理员");
+								}
+							})
+						}
+						
+						//删除照片
+						function del(imgID){
+							var d=new Date();
+							console.log(imgID);
+							$.post("https://customer.imotstudio.net/cabi/api/RemoveBanner",{ID:imgID}).done(function(res){
+								var dr=JSON.parse(res);
+								console.log(dr);
+								if(dr.code=="200"){
+									alert("删除成功");
+									getBannerList();
+								}
+							})
+						}
 					</script>
 					
 

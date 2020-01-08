@@ -5,7 +5,7 @@
 	  <meta charset="utf-8">
 	  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	  <!-- InstanceBeginEditable name="doctitle" -->
-	  <title>管理首页</title>
+	  <title>产品分类管理</title>
 	  <!-- InstanceEndEditable -->
 	  <!-- plugins:css -->
 	  <link rel="stylesheet" href="vendors/mdi/css/materialdesignicons.min.css">
@@ -21,6 +21,7 @@
 	  <script src="vendors/base/vendor.bundle.base.js"></script>
 	  <script src="js/common.js"></script>
 	  <!-- InstanceBeginEditable name="head" -->
+	 
 	  <!-- InstanceEndEditable -->
 	</head>
 
@@ -127,77 +128,89 @@
 			  <div class="main-panel">
 				<div class="content-wrapper">
 					<!-- InstanceBeginEditable name="ConetentArea" -->
-					 <div class="row">
-						<div class="col-md-12 grid-margin">
-						  <div class="d-flex justify-content-between flex-wrap">
-							<div class="d-flex align-items-end flex-wrap">
-							  <div class="mr-md-3 mr-xl-5">
-								<h2>欢迎回来,</h2>
-								<p class="mb-md-0">您的相关数据如下</p>
-							  </div>
-							</div>
+					
+					<div class="col-lg grid-margin stretch-card">
+					  <div class="card">
+						<div class="card-body">
+						  <h4 class="card-title">产品系列表</h4>
+						  <p class="card-description">
+							  您共有<code>5</code>个产品系列
+						  </p>
+						  <div class="table-responsive">
+							<table class="table">
+							  <thead>
+								<tr>
+								  <th>#</th>
+								  <th><b>系列名字</b></th>
+								  <th><b>产品总数</b></th>
+								  <th><b>上架产品数</b></th>
+								  <th><b>状态</b></th>
+								  <th><b>操作</b></th>
+								</tr>
+							  </thead>
+							  <tbody id="list_table">
+								  
+								<tr>
+								  <td>1</td>
+								  <td>挚爱的冬季</td>
+								  <td>14</td>
+								  <td>14</td>
+								  <td><label class="badge badge-success">展示中</label></td>
+								  <td>
+									  <button>下架</button>
+									  <button>删除</button>
+								  </td>
+								</tr>
+								<tr>
+								   <td>1</td>
+								  <td>挚爱的冬季</td>
+								  <td>14</td>
+								  <td>14</td>
+								  <td><label class="badge badge-danger">已下架</label></td>
+								  <td>
+									  <label class="badge badge-success">Completed</label>
+								  </td>
+								</tr>
+								<tr>
+								  <td>状态</td>
+								  <td>John</td>
+								  <td>53275533</td>
+								  <td>14 May 2017</td>
+								  <td><label class="badge badge-info">Fixed</label></td>
+								</tr>
+								<tr>
+								  <td>4</td>
+								  <td>Peter</td>
+								  <td>53275534</td>
+								  <td>16 May 2017</td>
+								  <td><label class="badge badge-success">Completed</label></td>
+								</tr>
+								<tr>
+								  <td>5</td>
+								  <td>Dave</td>
+								  <td>53275535</td>
+								  <td>20 May 2017</td>
+								  <td><label class="badge badge-warning">In progress</label></td>
+								</tr>
+							  </tbody>
+							</table>
 						  </div>
 						</div>
 					  </div>
-					  <div class="row">
-							<div class="col-md-12 grid-margin stretch-card">
-							  <div class="card">
-								<div class="card-body dashboard-tabs p-0">
-								  <ul class="nav nav-tabs px-4" role="tablist">
-									<li class="nav-item">
-									  <a class="nav-link active" id="overview-tab" data-toggle="tab" href="#overview" role="tab" aria-controls="overview" aria-selected="true">概览</a>
-									</li>
-								  </ul>
-								  <div class="tab-content py-0 px-0">
-									<div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
-									  <div class="d-flex flex-wrap justify-content-xl-between">
-										<div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-										  <i class="mdi mdi-account-box icon-lg mr-3 text-primary"></i>
-										  <div class="d-flex flex-column justify-content-around">
-											<small class="mb-1 text-muted">用户信息量</small>
-											<h5 class="mr-2 mb-0">3250</h5>
-										  </div>
-										</div>
-										<div class="d-flex py-3 border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-										  <i class="mdi mdi-format-list-numbers mr-3 icon-lg text-danger"></i>
-										  <div class="d-flex flex-column justify-content-around">
-											<small class="mb-1 text-muted">产品系列分类</small>
-											<h5 class="mr-2 mb-0">5</h5>
-										  </div>
-										</div>	
-										<div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-										  <i class="mdi mdi-note-plus-outline mr-3 icon-lg text-success"></i>
-										  <div class="d-flex flex-column justify-content-around">
-											<small class="mb-1 text-muted">发布产品SKU</small>
-											<h5 class="mr-2 mb-0">983</h5>
-										  </div>
-										</div>
-										  				  
-										<div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-										  <i class="mdi mdi-bookmark-check mr-3 icon-lg text-warning"></i>
-										  <div class="d-flex flex-column justify-content-around">
-											<small class="mb-1 text-muted">产品预约次数</small>
-											<h5 class="mr-2 mb-0">223</h5>
-										  </div>
-										</div>
-										  
-										<div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-										  <i class="mdi mdi-heart-box-outline mr-3 icon-lg text-danger"></i>
-										  <div class="d-flex flex-column justify-content-around">
-											<small class="mb-1 text-muted">产品收藏次数</small>
-											<h5 class="mr-2 mb-0">12345</h5>
-										  </div>
-										</div>
-
-									  </div>
-									</div>
-
-								  </div>
-								</div>
-							  </div>
-							</div>
-						  </div>
-				  
+					</div>
+					
+					<script>
+						function getTypeList(){
+							
+							
+						}
+					
+					
+					</script>
+					
+					
+					
+					
 					<!-- InstanceEndEditable -->
 				</div>
 				
