@@ -157,8 +157,8 @@
 								  <td>14</td>
 								  <td><label class="badge badge-success">展示中</label></td>
 								  <td>
-									  <button>下架</button>
-									  <button>删除</button>
+									  <button data-tid="0">下架</button>
+									  <button data-tid="0">删除</button>
 								  </td>
 								</tr>
 								<tr>
@@ -200,8 +200,11 @@
 					</div>
 					
 					<script>
+						getTypeList();
 						function getTypeList(){
-							
+							$.get("https://customer.imotstudio.net/cabi/api/product/GetProductType").done(function(res){
+								console.log(res);
+							})
 							
 						}
 					
