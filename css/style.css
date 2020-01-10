@@ -22035,3 +22035,46 @@ dl li {
 	padding-top: 10px;
 }
 
+
+#add_type_wrap {
+	width: 550px;
+	background-color: #FFFFFF;
+	display: none;
+}
+
+.list-type {
+	display: flex;
+	list-style: none;
+	padding-left: 0;
+}
+
+.list-type > li{
+	margin-right: 1.5rem;
+	padding: 0.2rem 0.75rem;
+	background-color: #D6D6D6;
+	border-radius: 5px;
+	font-size: 0.8rem;
+	cursor: pointer;
+}
+.list-type > li:hover{
+	background-color: #ff4747;
+	color: #fff;
+}
+
+
+.list-type >li.active{
+	background-color: #ff4747;
+	color: #fff;
+}
+
+#list_table {
+	
+}
+
+#list_table td{
+	font-size: 0.75rem;
+}
+
+#list_table td a{
+	color:#212529;
+}

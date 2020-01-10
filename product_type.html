@@ -21,7 +21,7 @@
 	  <script src="vendors/base/vendor.bundle.base.js"></script>
 	  <script src="js/common.js"></script>
 	  <!-- InstanceBeginEditable name="head" -->
-	 
+	  <script src="js/jquery.poplayer.js"></script>
 	  <!-- InstanceEndEditable -->
 	</head>
 
@@ -95,7 +95,7 @@
 				  </li>
 
 				  <li class="nav-item">
-					<a class="nav-link" href="pages/tables/basic-table.html">
+					<a class="nav-link" href="product_manage.html">
 					  <i class="mdi mdi-grid-large menu-icon"></i>
 					  <span class="menu-title">产品管理</span>
 					</a>
@@ -132,9 +132,12 @@
 					<div class="col-lg grid-margin stretch-card">
 					  <div class="card">
 						<div class="card-body">
-						  <h4 class="card-title">产品系列表</h4>
+						  <h4 class="card-title d-flex justify-content-between align-items-center">
+							  <div>产品系列表</div>
+							  <a id="avatar" class="btn btn-primary btn-sm text-white">添加产品分类</a>
+						  </h4>
 						  <p class="card-description">
-							  您共有<code>5</code>个产品系列
+							  您共有<code id="count">5</code>个产品系列
 						  </p>
 						  <div class="table-responsive">
 							<table class="table">
@@ -149,48 +152,8 @@
 								</tr>
 							  </thead>
 							  <tbody id="list_table">
-								  
 								<tr>
-								  <td>1</td>
-								  <td>挚爱的冬季</td>
-								  <td>14</td>
-								  <td>14</td>
-								  <td><label class="badge badge-success">展示中</label></td>
-								  <td>
-									  <button data-tid="0">下架</button>
-									  <button data-tid="0">删除</button>
-								  </td>
-								</tr>
-								<tr>
-								   <td>1</td>
-								  <td>挚爱的冬季</td>
-								  <td>14</td>
-								  <td>14</td>
-								  <td><label class="badge badge-danger">已下架</label></td>
-								  <td>
-									  <label class="badge badge-success">Completed</label>
-								  </td>
-								</tr>
-								<tr>
-								  <td>状态</td>
-								  <td>John</td>
-								  <td>53275533</td>
-								  <td>14 May 2017</td>
-								  <td><label class="badge badge-info">Fixed</label></td>
-								</tr>
-								<tr>
-								  <td>4</td>
-								  <td>Peter</td>
-								  <td>53275534</td>
-								  <td>16 May 2017</td>
-								  <td><label class="badge badge-success">Completed</label></td>
-								</tr>
-								<tr>
-								  <td>5</td>
-								  <td>Dave</td>
-								  <td>53275535</td>
-								  <td>20 May 2017</td>
-								  <td><label class="badge badge-warning">In progress</label></td>
+								  <td>加载中..</td>  
 								</tr>
 							  </tbody>
 							</table>
@@ -199,14 +162,142 @@
 					  </div>
 					</div>
 					
+					
+					<div class="p-3" id="add_type_wrap">
+						  <div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel" style="font-weight: bold;">添加产品分类</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close" onClick="$.closePopLayer()">
+							  <span aria-hidden="true">&times;</span>
+							</button>
+						  </div>
+						  <div class="modal-body">
+							  <form>
+								 <div class="form-group">
+								   <label for="recipient-name" class="col-form-label">分类名称:</label>
+								   <input type="text" class="form-control" id="type_name">
+								   <div id="name_alert" class="alert alert-danger m-0 mt-3 p-2" style="font-size: 0.75rem; display: none;" role="alert">
+  									   请输入分类名称
+								   </div>
+								 </div>
+							  </form>
+
+						  </div>
+						  <div class="modal-footer pr-0">
+							  <button id="btn_add_type" type="button" class="btn btn-primary">确定</button>
+						  </div>
+
+					</div>
+					
+					
+					
 					<script>
 						getTypeList();
+						
+						$("#avatar").click(function(){
+							$.showPopLayer({
+								target:'add_type_wrap'
+							})
+						});
+						
+						
+						$("#type_name").on('input',function(){
+							$(this).next().hide();
+						})
+						
+						
+						$("#btn_add_type").click(function(){
+							var tName=$("#type_name").val();
+							if($.trim(tName)==""){
+								$("#name_alert").show();
+							}else{
+								$.post('https://customer.imotstudio.net/cabi/api/product/AddType?TypeName='+tName).done(function(res){
+									console.log(res);
+									if(res.Code=="400"){
+										$("#name_alert").text(res.Message).show();
+									}else{
+										$.closePopLayer();
+										getTypeList();
+										$("#name_alert").text("请输入分类名称").hide();
+										
+									}
+								});
+							}
+							
+						})
+						
+						
+						//获取产品分类
 						function getTypeList(){
 							$.get("https://customer.imotstudio.net/cabi/api/product/GetProductType").done(function(res){
-								console.log(res);
-							})
-							
+								
+								if(res.Code=="200"){
+									$("#count").text(res.Data.length);
+									if(res.Data.length>0){
+										$("#list_table").empty();
+										$.each(res.Data,function(i,o){
+											var html='<tr>\
+													  <td>'+(i+1)+'</td>\
+													  <td>'+o.Title+'</td>\
+													  <td>'+o.count+'</td>\
+													  <td>'+o.isShowing+'</td>\
+													  <td><label class="badge badge-success">展示中</label></td>\
+													  <td>\
+														  <button data-tid="'+o.ID+'" class="btn btn-warning btn-sm btn-down" style="font-size:0.75rem; line-height:0.75rem;" onclick="updown('+o.ID+',0)">下架</button>\
+ 														  <button data-tid="'+o.ID+'" class="btn btn-primary btn-sm btn-up" style="font-size:0.75rem; line-height:0.75rem; display:none" onclick="updown('+o.ID+',1)">上架</button>\
+														  <button data-tid="'+o.ID+'" class="btn btn-sm btn-danger ml-3 btn-del" style="font-size:0.75rem; line-height:0.75rem;" onclick="del('+o.ID+')">删除</button>\
+													  </td>\
+												  </tr>';
+											$("#list_table").append(html);
+											var l=$("#list_table > tr").last();
+											if(o.IsLocked==true){
+												l.find('label').attr('class','badge badge-light').text('已下架');
+												l.find('button.btn-down').css('display','none');
+												l.find('button.btn-up').css('display','inline-block');
+
+											}	
+										});
+										
+									}else{
+										var h='<tr><td>您还没有任分类</td></tr>';
+										$("#list_table").append(h);
+									}
+								}
+
+							})	
 						}
+						
+						
+						//删除产品分类
+						function del(typeID){
+							if(confirm("删除产品分类同时会删除该分类下的所有产品，且不能恢复，确认删除吗？")){
+								$.post("https://customer.imotstudio.net/cabi/api/product/DeleteType?TypeID="+typeID).done(function(res){
+									if(res.Code==200){
+										alert("删除成功！");
+										getTypeList();
+									}else{
+										alert("出现错误，请联系管理员");
+									}
+								})	
+							}
+						}
+						
+						//上架，下架产品
+						function updown(typeID,isUp){
+							if(isUp==0){
+								if(confirm("下架产品后，该系列产品将不会对用户展示，确认下架吗？")){
+									$.post("https://customer.imotstudio.net/cabi/api/product/DownUpProductType",{typeID:typeID,isUp:isUp}).done(function(res){
+										console.log(res);
+										getTypeList();
+									})
+								}
+							}else{
+								$.post("https://customer.imotstudio.net/cabi/api/product/DownUpProductType",{typeID:typeID,isUp:isUp}).done(function(res){
+									console.log(res);
+									getTypeList();
+								})
+							}
+						}
+						
 					
 					
 					</script>
