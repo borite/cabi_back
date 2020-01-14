@@ -21,7 +21,7 @@
 	  <script src="vendors/base/vendor.bundle.base.js"></script>
 	  <script src="js/common.js"></script>
 	  <!-- InstanceBeginEditable name="head" -->
-	 	
+	  <script src="js/jquery.validate.min.js"></script>
 	  <!-- InstanceEndEditable -->
 	</head>
 
@@ -128,6 +128,116 @@
 			  <div class="main-panel">
 				<div class="content-wrapper">
 					<!-- InstanceBeginEditable name="ConetentArea" -->
+					 <div class="col-12 grid-margin stretch-card">
+						 
+ 						<div class="card">
+							<div class="card-body">
+							  <h4 class="card-title" style="font-size:1.5rem;">添加产品信息</h4>
+							  <p class="card-description mb-3">红色星号为必填项</p>
+							  <p class="card-description mb-4">
+								<span class="text-primary">Step1-产品基础信息</span>
+								<span>/</span>
+								<span>Step2-产品相关图片</span>
+							  </p>
+							  <form class="forms-sample">
+								<div class="form-group">
+								  <label for="exampleInputName1"><span style="color: #E40F12;">*</span>产品名称</label>
+								  <input type="text" class="form-control" id="title" name="title" placeholder="产品名称">
+								</div>
+								  
+								<div class="form-group">
+								  <label for="exampleInputEmail3">产品副标题</label>
+								  <input type="email" class="form-control" id="sub_title" name="sub_title" placeholder="副标题（最多12个字符）">
+								</div>
+								  
+								<div class="form-group">
+								  <label for="exampleInputName1"><span style="color: #E40F12;">*</span>产品所属系列</label>
+								  <select class="form-control" id="series" name="series">
+									  <option>冬季的挚爱</option>
+								  </select>
+								</div> 
+  
+								  
+								<div class="form-group">
+								  <label for="exampleInputPassword4"><span style="color: #E40F12;">*</span>产品价格</label>
+								  <input type="password" class="form-control" id="price" name="price" placeholder="产品价格">
+								</div>		
+								  
+								<div class="form-group">
+								  <label for="exampleInputPassword4"><span style="color: #E40F12;">*</span>产品尺码</label>
+								  <input class="form-control" id="size" name="size" placeholder="产品尺码">
+								</div>		
+								
+	  
+								<div class="form-group">
+								  <label for="exampleInputPassword4"><span style="color: #E40F12;">*</span>适用场景</label>
+								  <input class="form-control" id="scene" name="scene" placeholder="适用场景">
+								</div>
+		  
+
+								<div class="form-group">
+								  <label for="exampleTextarea1">设计理念</label>
+								  <textarea class="form-control" id="concept" name="concept" rows="4" placeholder="设计理念"></textarea>
+								</div>
+								<button id="do_step1" type="button" class="btn btn-primary mr-2">确定，下一步</button>
+								<button type="reset" class="btn btn-light">取消</button>
+							  </form>
+							</div>
+						  </div>
+						 
+					 </div>
+					
+					<script>
+						
+						getTypeList();
+						
+						$("#do_step1").click(function(){
+							
+							
+							
+							
+							
+							
+							
+							
+						});
+
+												
+						//获取所有系列
+						function getTypeList(){
+							$.get("https://customer.imotstudio.net/cabi/api/product/GetProductType").done(function(res){
+								
+								if(res.Code=="200"){
+									if(res.Data.length>0){
+										$("#series").empty();
+										$("#series").append('<option value="0">请选择</option>');
+										$.each(res.Data,function(i,o){
+											 
+											if(o.IsLocked==false){
+												var html='<option value="'+o.ID+'">'+o.Title+'</option>';
+											}
+											$("#series").append(html);
+										});
+									}else{
+										alert("您还没有设置产品系列，请先设置产品系列");
+									}
+								}else{
+									alert("您还没有产品系列，请先添加产品系列！");
+									location.href="product_type.html";
+								}
+							})	
+					    }
+						
+						
+						
+						
+						
+					</script>
+					
+					
+					
+					
+					
 					<!-- InstanceEndEditable -->
 				</div>
 				
