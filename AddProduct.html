@@ -139,7 +139,7 @@
 								<span>/</span>
 								<span>Step2-产品相关图片</span>
 							  </p>
-							  <form class="forms-sample">
+							  <form id="step1" class="forms-sample">
 								<div class="form-group">
 								  <label for="exampleInputName1"><span style="color: #E40F12;">*</span>产品名称</label>
 								  <input type="text" class="form-control" id="title" name="title" placeholder="产品名称">
@@ -191,10 +191,24 @@
 						
 						getTypeList();
 						
+						
+						$("#step1").validate({
+							rules:{
+								name:"required"
+							},
+							message:{
+								name:"请输入产品名称"
+							}
+							
+							
+							
+							
+						})
+						
+						
 						$("#do_step1").click(function(){
 							
-							
-							
+							console.log($("#step1").validate());
 							
 							
 							
