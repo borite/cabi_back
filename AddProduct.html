@@ -179,7 +179,7 @@
 								  <label for="exampleTextarea1">设计理念</label>
 								  <textarea class="form-control" id="concept" name="concept" rows="4" placeholder="设计理念"></textarea>
 								</div>
-								<button id="do_step1" type="button" class="btn btn-primary mr-2">确定，下一步</button>
+								<button id="do_step1" type="submit" class="btn btn-primary mr-2">确定，下一步</button>
 								<button type="reset" class="btn btn-light">取消</button>
 							  </form>
 							</div>
@@ -194,27 +194,23 @@
 						
 						$("#step1").validate({
 							rules:{
-								name:"required"
+								title:{
+									required:true
+								}
 							},
 							message:{
-								name:"请输入产品名称"
-							}
-							
-							
-							
-							
+								title:{
+									required:"请输入产品名字"
+								}
+							}		
 						})
 						
-						
+/*						
 						$("#do_step1").click(function(){
 							
-							console.log($("#step1").validate());
 							
-							
-							
-							
-							
-						});
+
+						});*/
 
 												
 						//获取所有系列
