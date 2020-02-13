@@ -205,7 +205,7 @@
 						//获取所有系列
 						function getTypeList(){
 							$.get("https://customer.imotstudio.net/cabi/api/product/GetProductType").done(function(res){
-								
+								console.log(res);
 								if(res.Code=="200"){
 									if(res.Data.length>0){
 										$("#type_list").empty();
