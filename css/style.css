@@ -22078,3 +22078,14 @@ dl li {
 #list_table td a{
 	color:#212529;
 }
+
+
+.error-border{
+	border:1px solid #ff4747 !important;
+}
+
+.error-text{
+	color: #ff4747;
+}
+
+

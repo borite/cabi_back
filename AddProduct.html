@@ -139,47 +139,49 @@
 								<span>/</span>
 								<span>Step2-产品相关图片</span>
 							  </p>
-							  <form id="step1" class="forms-sample">
+							  <form id="step1" class="forms-sample" >
 								<div class="form-group">
-								  <label for="exampleInputName1"><span style="color: #E40F12;">*</span>产品名称</label>
-								  <input type="text" class="form-control" id="title" name="title" placeholder="产品名称">
+								  <label for="title"><span style="color: #E40F12;">*</span>产品名称</label>
+							      <div class="col">
+									<input type="text" class="form-control" id="title" name="title" placeholder="产品名称">
+								  </div>
 								</div>
 								  
 								<div class="form-group">
-								  <label for="exampleInputEmail3">产品副标题</label>
+								  <label for="sub_title">产品副标题</label>
 								  <input type="email" class="form-control" id="sub_title" name="sub_title" placeholder="副标题（最多12个字符）">
 								</div>
 								  
 								<div class="form-group">
-								  <label for="exampleInputName1"><span style="color: #E40F12;">*</span>产品所属系列</label>
-								  <select class="form-control" id="series" name="series">
-									  <option>冬季的挚爱</option>
+								  <label for="series"><span style="color: #E40F12;">*</span>产品所属系列</label>
+								  <select class="form-control has-danger" id="series" name="series">
+									  
 								  </select>
 								</div> 
   
 								  
 								<div class="form-group">
-								  <label for="exampleInputPassword4"><span style="color: #E40F12;">*</span>产品价格</label>
-								  <input type="password" class="form-control" id="price" name="price" placeholder="产品价格">
+								  <label for="price"><span style="color: #E40F12;">*</span>产品价格</label>
+								  <input type="text" class="form-control" id="price" name="price" placeholder="产品价格">
 								</div>		
 								  
 								<div class="form-group">
-								  <label for="exampleInputPassword4"><span style="color: #E40F12;">*</span>产品尺码</label>
+								  <label for="size"><span style="color: #E40F12;">*</span>产品尺码</label>
 								  <input class="form-control" id="size" name="size" placeholder="产品尺码">
 								</div>		
 								
 	  
 								<div class="form-group">
-								  <label for="exampleInputPassword4"><span style="color: #E40F12;">*</span>适用场景</label>
+								  <label for="scene"><span style="color: #E40F12;">*</span>适用场景</label>
 								  <input class="form-control" id="scene" name="scene" placeholder="适用场景">
 								</div>
 		  
 
 								<div class="form-group">
-								  <label for="exampleTextarea1">设计理念</label>
+								  <label for="concept">设计理念</label>
 								  <textarea class="form-control" id="concept" name="concept" rows="4" placeholder="设计理念"></textarea>
 								</div>
-								<button id="do_step1" type="submit" class="btn btn-primary mr-2">确定，下一步</button>
+								<button id="do_step1" type="button" class="btn btn-primary mr-2">确定，下一步</button>
 								<button type="reset" class="btn btn-light">取消</button>
 							  </form>
 							</div>
@@ -190,37 +192,73 @@
 					<script>
 						
 						getTypeList();
-						
-						
+
+						$.validator.setDefaults({
+							errorClass:'error-text',
+							highlight:function(element){
+								$(element).addClass('error-border');								
+							},
+							unhighlight:function(element){
+								$(element).removeClass('error-border');
+							},
+						})
+												
 						$("#step1").validate({
 							rules:{
 								title:{
 									required:true
+								},
+								series:{
+									required:true
+								},
+								price:{
+									required:true
+								},
+								size:{
+									required:true
+								},
+								scene:{
+									required:true
 								}
 							},
-							message:{
+							 messages:{
 								title:{
 									required:"请输入产品名字"
+								},
+								series:{
+									required:"请选择产品序列"
+								},
+								price:{
+									required:"请填写产品价格"
+								},
+								size:{
+									required:"请填写尺码"
+								},
+								scene:{
+									required:"请填写适用场景"
 								}
-							}		
+							}
+											 
 						})
 						
-/*						
+						
 						$("#do_step1").click(function(){
 							
-							
+							if($("#step1").validate().form()){
+								console.log('isOJBK');
+							}
 
-						});*/
+						});
 
 												
 						//获取所有系列
 						function getTypeList(){
-							$.get("https://customer.imotstudio.net/cabi/api/product/GetProductType").done(function(res){
+							$.get("https://customer.imotstudio.net/cabi/api/product/GetProductTypeForBack").done(function(res){
 								
 								if(res.Code=="200"){
 									if(res.Data.length>0){
 										$("#series").empty();
-										$("#series").append('<option value="0">请选择</option>');
+										$("#series").append('<option value="">请选择</option>');
 										$.each(res.Data,function(i,o){
 											 
 											if(o.IsLocked==false){
