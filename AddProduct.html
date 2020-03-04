@@ -22,6 +22,7 @@
 	  <script src="js/common.js"></script>
 	  <!-- InstanceBeginEditable name="head" -->
 	  <script src="js/jquery.validate.min.js"></script>
+	  <script src="js/request_objs.js"></script>
 	  <!-- InstanceEndEditable -->
 	</head>
 
@@ -149,7 +150,7 @@
 								  
 								<div class="form-group">
 								  <label for="sub_title">产品副标题</label>
-								  <input type="email" class="form-control" id="sub_title" name="sub_title" placeholder="副标题（最多12个字符）">
+								  <input type="text" class="form-control" id="sub_title" name="sub_title" placeholder="副标题（最多12个字符）">
 								</div>
 								  
 								<div class="form-group">
@@ -167,7 +168,7 @@
 								  
 								<div class="form-group">
 								  <label for="size"><span style="color: #E40F12;">*</span>产品尺码</label>
-								  <input class="form-control" id="size" name="size" placeholder="产品尺码">
+								  <input class="form-control" id="size" name="size" placeholder="产品尺码,多个尺码用逗号分隔，如:S,L,XL">
 								</div>		
 								
 	  
@@ -187,6 +188,11 @@
 							</div>
 						  </div>
 						 
+					 </div>
+					
+					
+					 <div class="col-12 grid-margin stretch-card">
+						
 					 </div>
 					
 					<script>
@@ -243,9 +249,32 @@
 						
 						
 						$("#do_step1").click(function(){
+							var productInfo={
+									"ThemeID":"1",
+									"NewTitle":"新闻的标题",
+									"Price":"999",
+									"Contents":"这里存编辑器的内容",
+									"Discribe":"这是一个描述",
+									"Color":"红色,绿色,蓝色",
+									"TopRecommend":"true",
+									"SizeInfo":"L,XL,M",
+									"Scene":"商务",
+									"ListImg":"列表页显示一张",
+									"ImgList":"详情页Banner图片数组",
+									"CollectionImg":"这里放收藏图",
+									"Desplay":"99",
+									"TopDesplay":"99",
+									"AllDesplay":"99",
+									"IsLocked":"false",
+									"Remark":"这里是后台的备注"
+							}
 							
 							if($("#step1").validate().form()){
-								console.log('isOJBK');
+								var newProduct=productInfo;
+								newProduct.ThemeID=2;
+								newProduct.NewTitle= $.trim($("#title").val());
+								newProduct.Price=$.trim($("#price").val());
+								console.log(newProduct)
 							}
 
 						});
