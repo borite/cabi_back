@@ -22089,3 +22089,18 @@ dl li {
 }
 
 
+
+#poster_select {
+	display:none;
+}
+
+#btn_add_poster {
+	display: block;
+	width: 160px;
+	height: 90px;
+	background-image: url(../images/btn_add.png);
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: contain;
+	cursor: pointer;
+}
