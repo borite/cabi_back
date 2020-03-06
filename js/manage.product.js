@@ -1,7 +1,7 @@
 // JavaScript Document
 
 var productInfo={}
-
+var i=0;
 $(function () {
 	
 	getTypeList();
@@ -86,7 +86,8 @@ $(function () {
 				"SizeInfo": $.trim($("#size").val()), //产品尺寸                              	
 				"Scene": $.trim($("#scene").val()), //使用场景
 				"ListImg": "", //详情页上边的滚动图                    
-				"ImgList": "", //面料图片               
+				"ImgList": "", //面料图片    
+				"ClothInfo":"",//面料说明
 				"CollectionImg": "" //封面+收藏图片
 			}
 
@@ -110,10 +111,9 @@ $(function () {
 		$("#tit_step1").addClass('text-primary');
 	});
 
-	
-	
-	
-	$("#btn_add_poster").click(function () {
+
+	$("#btn_add_poster,#modi_cover").click(function (e) {
+		e.preventDefault();
 		$("#poster_select").click();
 	});
 	
@@ -135,10 +135,22 @@ $(function () {
 		var reader = new FileReader();
 		reader.readAsDataURL(file);
 		reader.onload = function () {
+			
 			// 通过 reader.result 来访问生成的 DataURL
 			var url = reader.result;
 			$("#cropbox,#preview").attr("src", url);
 			initCropper();
+			
+			//保存按钮点击事件只保存一次
+			$("#btn_save").one('click',function () {
+				var cas = $("#cropbox").cropper('getCroppedCanvas');
+				var base64url = cas.toDataURL('image/png');
+				$("#product_cover").attr("src", base64url);
+				$("#btn_add_poster").addClass("d-none");
+				$("#poster_select").next('.card').removeClass("d-none");
+				$.closePopLayer();
+			});
+			
 			$.showPopLayer({
 				target: "uppic_wrap",
 				animate: false,
@@ -151,27 +163,181 @@ $(function () {
 	});
 	
 	
-	//保存图片
-	$("#btn_save").click(function(){
-			var cas=$("#cropbox").cropper('getCroppedCanvas');
-			var base64url=cas.toDataURL('image/png');
-			$("#prev_img").attr("src",base64url);
-			$.closePopLayer();
+	//添加展示图相关操作
+	$("#btn_add_muti").click(function(e){
+		e.preventDefault();
+		if($("#zs_pics > .card").length==5){
+			alert("最多只能上传5个展示图");
+			return false;
+		}
+		$("#zhanshi_select").click();
 	});
 	
+	$("#zhanshi_select").change(function () {
+		var size = 2 * 1024 * 1024;
+		var file = this.files[0];
+		var fileName = file.name;
+		var fileSize = file.size;
+		fileType = fileName.substring(fileName.lastIndexOf('.'), fileName.length).toLowerCase();
+		if (fileType != '.gif' && fileType != '.jpeg' && fileType != '.png' && fileType != '.jpg') {
+			alert("上传失败，请上传jpg,png格式的图片");
+			return;
+		}
+		if (fileSize > size) {
+			alert("上传失败，请上传2MB以内的图片。");
+			return;
+		}
+		var reader = new FileReader();
+		reader.readAsDataURL(file);
+		reader.onload = function () {
+			// 通过 reader.result 来访问生成的 DataURL
+			var url = reader.result;
+			$("#cropbox,#preview").attr("src", url);
+			initCropper();
+			
+			//保存按钮点击事件只保存一次
+			$("#btn_save").one('click',function () {
+				i++;
+				var cas = $("#cropbox").cropper('getCroppedCanvas');
+				var base64url = cas.toDataURL('image/png');
+				addImgBlock(base64url);
+				$.closePopLayer();
+			});
+			
+			
+			$.showPopLayer({
+				target: "uppic_wrap",
+				animate: false,
+				onClose: function () {
+					$('#zhanshi_select').prop('value', '');
+					$('#cropbox').cropper('destroy');
+				}
+			});
+		}
+	});
+	
+	
+	//添加面料图片相关操作
+	
+	$("#btn_add_cloth,#modi_img").click(function(e){
+		e.preventDefault();
+		$("#img_select").click();
+	});
+	
+	$("#img_select").change(function () {
+		var size = 2 * 1024 * 1024;
+		var file = this.files[0];
+		var fileName = file.name;
+		var fileSize = file.size;
+		fileType = fileName.substring(fileName.lastIndexOf('.'), fileName.length).toLowerCase();
+		if (fileType != '.gif' && fileType != '.jpeg' && fileType != '.png' && fileType != '.jpg') {
+			alert("上传失败，请上传jpg,png格式的图片");
+			return;
+		}
+		if (fileSize > size) {
+			alert("上传失败，请上传2MB以内的图片。");
+			return;
+		}
+		var reader = new FileReader();
+		reader.readAsDataURL(file);
+		reader.onload = function () {
+			
+			// 通过 reader.result 来访问生成的 DataURL
+			var url = reader.result;
+			$("#cropbox,#preview").attr("src", url);
+			initCropper(1);
+			
+			//保存按钮点击事件只保存一次
+			$("#btn_save").one('click',function () {
+				var cas = $("#cropbox").cropper('getCroppedCanvas');
+				var base64url = cas.toDataURL('image/png');
+				$("#cloth_img").attr("src", base64url);
+				$("#btn_add_cloth").addClass("d-none");
+				$("#btn_add_cloth").next('.card').removeClass("d-none");
+				$.closePopLayer();
+			});
+			
+			$.showPopLayer({
+				target: "uppic_wrap",
+				animate: false,
+				onClose: function () {
+					$('#img_select').prop('value', '');
+					$('#cropbox').cropper('destroy');
+				}
+			});
+		}
+	});
+	
+	
+	//添加详情图片相关操作
+	$("#btn_add_info,#modi_info_img").click(function(e){
+		e.preventDefault();
+		$("#info_select").click();
+	});
+	
+	$("#info_select").change(function () {
+		var size = 2 * 1024 * 1024;
+		var file = this.files[0];
+		var fileName = file.name;
+		var fileSize = file.size;
+		fileType = fileName.substring(fileName.lastIndexOf('.'), fileName.length).toLowerCase();
+		if (fileType != '.gif' && fileType != '.jpeg' && fileType != '.png' && fileType != '.jpg') {
+			alert("上传失败，请上传jpg,png格式的图片");
+			return;
+		}
+		if (fileSize > size) {
+			alert("上传失败，请上传2MB以内的图片。");
+			return;
+		}
+		var reader = new FileReader();
+		reader.readAsDataURL(file);
+		reader.onload = function () {
+			// 通过 reader.result 来访问生成的 DataURL
+			var url = reader.result;
+			$("#info_img").attr('src',url);
+			$("#btn_add_info").addClass('d-none').next().removeClass('d-none');
+		}
+	});
 	
 	
 }); //ready_end
 
 
-function initCropper() {
-	$("#cropbox").cropper({
-		aspectRatio: 71 / 100,
-		viewMode: 1,
-		minCropBoxWidth: 71,
-		minCropBoxHeight: 100,
-		preview: "#avatat_prev"
+
+function addImgBlock(img64){
+	var temp='<div id="d'+i+'" class="card border-0 mr-4" style="width: 16rem;">\
+				<img id="product_cover" src="'+img64+'" style="width:100%;"/>\
+				<div class="card-body d-flex" style="justify-content: center">\
+					<button type="button" class="btn btn-danger btn-sm" onclick="removeImgBlock(\'d'+i+'\')">删除</button>\
+				</div>\
+			  </div>';
+    $("#zs_pics").append(temp);
+}
+
+function removeImgBlock(wid){
+	$("#"+wid).remove();
+}
+
+
+function initCropper(t) {
+	if(t===1){
+		$("#cropbox").cropper({
+			aspectRatio: 71 / 24,
+			viewMode: 1,
+			minCropBoxWidth: 71,
+			minCropBoxHeight: 100,
+			preview: "#avatat_prev"
+		});
+	}else{
+		$("#cropbox").cropper({
+			aspectRatio: 71 / 100,
+			viewMode: 1,
+			minCropBoxWidth: 71,
+			minCropBoxHeight: 100,
+			preview: "#avatat_prev"
 	});
+	}
+	
 }
 
 //获取所有系列

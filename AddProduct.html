@@ -159,7 +159,6 @@
 								<div class="form-group">
 								  <label for="series"><span style="color: #E40F12;">*</span>产品所属系列</label>
 								  <select class="form-control has-danger" id="series" name="series">
-									  
 								  </select>
 								</div> 
 								  
@@ -200,25 +199,73 @@
 								
 								
 								
-							  <form id="step2" class="forms-sample">
+							  <form id="step2" class="forms-sample d-none">
+								  
 								<div class="form-group">
-								  <label><span style="color: #E40F12;">*</span>添加封面图</label>
-							      <div class="col">
-									  <a id="btn_add_poster"></a>
-									  <input id="poster_select" type="file" accept="image/gif,image/png,image/jpeg,image/bmp">
-									  
-									  <div class="card d-none">
-									  	 <img src=""/>
-										 <div class="card-body">
-											
-											<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+								  <label class="my-2"><span style="color: #E40F12;">*</span>添加封面图</label>
+							      <div class="col mt-3">
+									  <a id="btn_add_poster" class="add_img"></a>
+									  <input id="poster_select" type="file" accept="image/gif,image/png,image/jpeg,image/bmp" />
+									  <div class="card d-none border-0 flex-row">
+									  	 <img id="product_cover" src="" width="350"/>
+										 <div class="card-body py-0">
+											<button id="modi_cover" type="button" class="btn btn-danger">修改</button>
 										  </div>
-
-									  </div>
-									  
+									  </div>  
 								  </div>
 								</div>
-
+								  
+								<div class="form-group" style="min-height: 300px;">
+								  <label class="d-block">
+									  <span style="color:#E40F12">*</span>添加展示图（最多5张）
+									  <a id="btn_add_muti" class="btn btn-primary btn-sm text-white float-right">添加轮播图</a>
+									  <input id="zhanshi_select" class="d-none" type="file" accept="image/gif,image/png,image/jpeg,image/bmp" />
+								  </label>
+								  <!--展示照片-->
+								  <div id="zs_pics" class="col mt-4 flex-row d-flex">
+										
+								  </div>
+								</div>
+								  
+								<!--添加面料照片-->
+								<div class="form-group" style="min-height: 280px;">
+								  <label class="d-block">
+									  <span style="color:#E40F12">*</span>添加面料图片
+								  </label>
+								  
+								  <div class="col mt-3">
+									  <input id="img_select" class="d-none" type="file" accept="image/gif,image/png,image/jpeg,image/bmp" />
+									  <a id="btn_add_cloth" class="add_img"></a> 
+									  <div class="card d-none border-0 flex-row">
+									  	 <img id="cloth_img" src="" width="350"/>
+										 <div class="card-body py-0">
+											<button id="modi_img" type="button" class="btn btn-danger">修改</button>
+										 </div>
+									  </div>  						     
+									  <input type="text" class="form-control mt-3" id="cloth_text" name="cloth_text" placeholder="面料说明">
+								  </div>
+								</div>
+								  
+								  
+							    <!--添加详情照片-->
+								<div class="form-group" style="min-height: 280px;">
+								  <label class="d-block">
+									  <span style="color:#E40F12">*</span>添加详情图片
+								  </label>
+								  
+								  <div class="col mt-3">
+									  <input id="info_select" class="d-none" type="file" accept="image/gif,image/png,image/jpeg,image/bmp" />
+									  <a id="btn_add_info" class="add_img"></a> 
+									  <div class="card d-none border-0 flex-row">
+									  	 <img id="info_img" src="" width="400"/>
+										 <div class="card-body py-0">
+											<button id="modi_info_img" type="button" class="btn btn-danger">修改</button>
+										 </div>
+									  </div>  						     
+									 
+								  </div>
+								</div>
+								  
 								<button id="back_step1" type="button" class="btn btn-primary mr-2">上一步</button>
 								<button id="btn_submit" type="button" class="btn btn-primary mr-2">确定</button>
 								<button type="button" class="btn btn-light btn-cancel">取消</button>
@@ -245,9 +292,7 @@
 						</div>
 
 						<div class="img-prev-wrap">
-							<div id="avatat_prev">
-								
-							</div>
+							<div id="avatat_prev"></div>
 							<div id="btn_save">保存</div>
 						</div>
 

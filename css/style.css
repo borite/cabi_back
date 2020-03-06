@@ -22094,7 +22094,7 @@ dl li {
 	display:none;
 }
 
-#btn_add_poster {
+.add_img {
 	display: block;
 	width: 160px;
 	height: 90px;
