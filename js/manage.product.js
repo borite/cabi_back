@@ -96,8 +96,7 @@ $(function () {
 			$("#step2").removeClass('d-none');
 			$("#tit_step1").removeClass('text-primary');
 			$("#tit_step2").addClass('text-primary');
-			console.log(productInfo);
-
+			//console.log(productInfo);
 		}
 
 	});
@@ -112,6 +111,7 @@ $(function () {
 	});
 
 
+	//添加封面图
 	$("#btn_add_poster,#modi_cover").click(function (e) {
 		e.preventDefault();
 		$("#poster_select").click();
@@ -304,9 +304,10 @@ $(function () {
 
 
 
+//添加滚动图
 function addImgBlock(img64){
 	var temp='<div id="d'+i+'" class="card border-0 mr-4" style="width: 16rem;">\
-				<img id="product_cover" src="'+img64+'" style="width:100%;"/>\
+				<img class="zs" src="'+img64+'" style="width:100%;"/>\
 				<div class="card-body d-flex" style="justify-content: center">\
 					<button type="button" class="btn btn-danger btn-sm" onclick="removeImgBlock(\'d'+i+'\')">删除</button>\
 				</div>\
@@ -314,11 +315,12 @@ function addImgBlock(img64){
     $("#zs_pics").append(temp);
 }
 
+//移除滚动图
 function removeImgBlock(wid){
 	$("#"+wid).remove();
 }
 
-
+//初始化Cropper
 function initCropper(t) {
 	if(t===1){
 		$("#cropbox").cropper({
@@ -335,9 +337,8 @@ function initCropper(t) {
 			minCropBoxWidth: 71,
 			minCropBoxHeight: 100,
 			preview: "#avatat_prev"
-	});
-	}
-	
+		});
+	}	
 }
 
 //获取所有系列
@@ -362,3 +363,75 @@ function getTypeList() {
 		}
 	})
 }
+
+
+//检查图片是否都上传
+function checkImgs()
+{
+	//产品封面图
+	var product_cover=$("#product_cover").attr("src") || null;
+	//展示图片
+	var zs_pics=$("#zs_pics img.zs").length;
+	//面料图片
+	var cloth_img= $("#cloth_img").attr('src') || null;
+	//详情图片
+	var info_img=$("#info_img").attr('src')||null;
+	
+	if(product_cover==null){
+		alert("请上传封面图");
+		return false;
+	}
+	
+	if(zs_pics==0){
+		alert("请上传展示图片");
+		return false;
+	}
+	
+	if(cloth_img==null){
+		alert("请上传面料图片");
+		return false;
+	}
+	
+	if(info_img==null){
+		alert("请上传详情图片");
+		return false;
+	}
+	
+	//return true;
+	
+	$.post("https://customer.imotstudio.net/cabi/api/UpdateCollection",{})
+	
+}
+
+
+//添加产品
+function addProduct(){
+	
+/*	{"ThemeID":"1","NewTitle":"新闻的标题","Price":"999","Contents":"这里存编辑器的内容","Discribe":"这是一个描述","Color":"红色,绿色,蓝色","TopRecommend":"true","SizeInfo":"L,XL,M","Scene":"商务","ListImg":"列表页显示一张","ImgList":"详情页Banner图片数组","CollectionImg":"这里放收藏图","Desplay":"99","TopDesplay":"99","AllDesplay":"99","IsLocked":"false","Remark":"这里是后台的备注"}*/
+	if(checkImgs()){
+		$.post("https://customer.imotstudio.net/cabi/api/AddProduct",{
+			ThemeID=productInfo.ThemeID,
+			
+			
+		})
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
