@@ -1,6 +1,7 @@
 // JavaScript Document
 
 var productInfo={}
+var newID=0;
 var i=0;
 $(function () {
 	
@@ -79,24 +80,25 @@ $(function () {
 				"NewTitle": $.trim($("#title").val()), //产品名字
 				"SubTitle": $.trim($("#sub_title").val()), //产品副标题
 				"Price": $.trim($("#price").val()), //产品价格
-				"Contents": "", //产品详情图
 				"Discribe": $.trim($("#description").val()), //产品描述
 				"Color": $.trim($("#color").val()), //产品颜色
-				"TopRecommend": "false", //是否首页轮播
 				"SizeInfo": $.trim($("#size").val()), //产品尺寸                              	
 				"Scene": $.trim($("#scene").val()), //使用场景
-				"ListImg": "", //详情页上边的滚动图                    
-				"ImgList": "", //面料图片    
-				"ClothInfo":"",//面料说明
-				"CollectionImg": "" //封面+收藏图片
+				"DesignConcept": $.trim($("#concept").val())
 			}
+			
+			$.post("https://customer.imotstudio.net/cabi/api/product/AddProduct",productInfo).done(function(res){
+				if(res.Code==200){
+					newID=res.Data;
+					$("#step1").addClass('d-none');
+					$("#step2").removeClass('d-none');
+					$("#tit_step1").removeClass('text-primary');
+					$("#tit_step2").addClass('text-primary');
+				}
+			})
 
 			//进入第二步
-			$("#step1").addClass('d-none');
-			$("#step2").removeClass('d-none');
-			$("#tit_step1").removeClass('text-primary');
-			$("#tit_step2").addClass('text-primary');
-			//console.log(productInfo);
+			
 		}
 
 	});
@@ -397,9 +399,9 @@ function checkImgs()
 		return false;
 	}
 	
-	//return true;
+	return true;
 	
-	$.post("https://customer.imotstudio.net/cabi/api/UpdateCollection",{})
+	
 	
 }
 
@@ -407,16 +409,25 @@ function checkImgs()
 //添加产品
 function addProduct(){
 	
+	//var updateCoverImg=$.post("https://customer.imotstudio.net/cabi/api/UpdateCollection",{})
+	
+	//$.post("https://customer.imotstudio.net/cabi/api/UpdateCollection",{})
+	
+	
 /*	{"ThemeID":"1","NewTitle":"新闻的标题","Price":"999","Contents":"这里存编辑器的内容","Discribe":"这是一个描述","Color":"红色,绿色,蓝色","TopRecommend":"true","SizeInfo":"L,XL,M","Scene":"商务","ListImg":"列表页显示一张","ImgList":"详情页Banner图片数组","CollectionImg":"这里放收藏图","Desplay":"99","TopDesplay":"99","AllDesplay":"99","IsLocked":"false","Remark":"这里是后台的备注"}*/
-	if(checkImgs()){
+/*	if(checkImgs()){
 		$.post("https://customer.imotstudio.net/cabi/api/AddProduct",{
 			ThemeID=productInfo.ThemeID,
 			
 			
 		})
-	}
+	}*/
 }
 
+
+function cacelAddProduct(){
+	
+}
 
 
 
