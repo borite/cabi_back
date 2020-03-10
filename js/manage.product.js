@@ -1,7 +1,7 @@
 // JavaScript Document
 
 var productInfo={}
-var newID=0;
+var newID=74;
 var i=0;
 $(function () {
 	
@@ -72,6 +72,11 @@ $(function () {
 	$(".btn-cancel").click(function(){
 		location.replace('product_manage.html');
 	});
+	
+	$("#btn_cancel").click(function(){
+		cancelAddProduct();
+		
+	})
 	
 	$("#do_step1").click(function () {
 		if ($("#step1").validate().form()) {
@@ -425,17 +430,27 @@ function addProduct(){
 }
 
 
-function cacelAddProduct(){
-	
+function cancelAddProduct(){
+	if(newID!==0 || newID!==null){
+/*		$.ajax("https://customer.imotstudio.net/cabi/api/product/DeleteProduct",{
+			method:'delete',
+			data:{productID:newID},
+			dataType:'json'
+		}).done(function(res){
+			console.log(res);
+		}).fail(function(err){
+			console.log(err);
+			
+		});*/
+		
+		$.post("https://customer.imotstudio.net/cabi/api/product/DeleteProduct",{productID:newID}).done(function(res){
+			console.log(res);
+		}).fail(function(err){
+			console.log(err);
+		})
+	}	
+	//location.replace('product_manage.html');
 }
-
-
-
-
-
-
-
-
 
 
 
