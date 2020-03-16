@@ -78,6 +78,8 @@ $(function () {
 		
 	})
 	
+	
+	//第一步点击，进入第二步
 	$("#do_step1").click(function () {
 		if ($("#step1").validate().form()) {
 			productInfo = {
@@ -89,21 +91,19 @@ $(function () {
 				"Color": $.trim($("#color").val()), //产品颜色
 				"SizeInfo": $.trim($("#size").val()), //产品尺寸                              	
 				"Scene": $.trim($("#scene").val()), //使用场景
-				"DesignConcept": $.trim($("#concept").val())
+				"DesignConcept": $.trim($("#concept").val())  //设计理念
 			}
 			
 			$.post("https://customer.imotstudio.net/cabi/api/product/AddProduct",productInfo).done(function(res){
 				if(res.Code==200){
 					newID=res.Data;
+					//进入第二步
 					$("#step1").addClass('d-none');
 					$("#step2").removeClass('d-none');
 					$("#tit_step1").removeClass('text-primary');
 					$("#tit_step2").addClass('text-primary');
 				}
 			})
-
-			//进入第二步
-			
 		}
 
 	});
@@ -406,14 +406,27 @@ function checkImgs()
 	
 	return true;
 	
-	
-	
 }
 
 
 //添加产品
 function addProduct(){
 	
+	if(checkImgs())
+	{
+	    var img= $("#product_cover").attr("src");
+		var Ext=img.substr(11,3);
+		
+		var businessParam = {
+             imgs: [{ext:Ext , baseURL:img }],
+             ID: 75
+        };
+		var updateCoverImg=$.post("https://customer.imotstudio.net/cabi/api/UpdateCollection",businessParam).done(function(res){
+			console.log(res);
+		});
+		
+	}
+
 	//var updateCoverImg=$.post("https://customer.imotstudio.net/cabi/api/UpdateCollection",{})
 	
 	//$.post("https://customer.imotstudio.net/cabi/api/UpdateCollection",{})
@@ -428,6 +441,9 @@ function addProduct(){
 		})
 	}*/
 }
+
+
+
 
 
 function cancelAddProduct(){
