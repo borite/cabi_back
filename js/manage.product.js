@@ -421,8 +421,20 @@ function addProduct(){
              imgs: [{ext:Ext , baseURL:img }],
              ID: 75
         };
-		var updateCoverImg=$.post("https://customer.imotstudio.net/cabi/api/UpdateCollection",businessParam).done(function(res){
-			console.log(res);
+		
+		
+		//上传封面图
+		$.post("https://customer.imotstudio.net/cabi/api/UpdateCollection",businessParam).then(function(res){
+			console.log("上传产品封面图：",res);
+			if(res.Code==200){
+				return $.post("https://customer.imotstudio.net/cabi/api/productList")
+			}
+			
+			
+			
+		}).then(function(res){
+			
+			
 		});
 		
 	}
