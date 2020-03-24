@@ -1,7 +1,7 @@
 // JavaScript Document
 
 var productInfo={}
-var newID=74;
+var newID=75;
 var i=0;
 $(function () {
 	
@@ -427,13 +427,18 @@ function addProduct(){
 		$.post("https://customer.imotstudio.net/cabi/api/UpdateCollection",businessParam).then(function(res){
 			console.log("上传产品封面图：",res);
 			if(res.Code==200){
-				return $.post("https://customer.imotstudio.net/cabi/api/productList")
+				
+				let 
+				
+				return $.post("https://customer.imotstudio.net/cabi/api/productList");
 			}
-			
-			
-			
 		}).then(function(res){
-			
+		    let l=$("#zs_pics .zs").length;
+			if(l>0){
+				
+				
+				
+			}
 			
 		});
 		
