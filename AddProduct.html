@@ -146,9 +146,7 @@
 							  <form id="step1" class="forms-sample" >
 								<div class="form-group">
 								  <label for="title"><span style="color: #E40F12;">*</span>产品名称</label>
-							      <div class="col">
-									<input type="text" class="form-control" id="title" name="title" placeholder="产品名称">
-								  </div>
+								  <input type="text" class="form-control" id="title" name="title" placeholder="产品名称">
 								</div>
 								  
 								<div class="form-group">
@@ -199,15 +197,14 @@
 								
 								
 								
-							  <form id="step2" class="forms-sample">
-								  
+							  <form id="step2" class="forms-sample">  
 								<div class="form-group">
 								  <label class="my-2"><span style="color: #E40F12;">*</span>添加封面图</label>
 							      <div class="col mt-3">
 									  <a id="btn_add_poster" class="add_img"></a>
 									  <input id="poster_select" type="file" accept="image/gif,image/png,image/jpeg,image/bmp" />
 									  <div class="card d-none border-0 flex-row">
-									  	 <img id="product_cover" src="" width="350"/>
+									  	 <img id="product_cover" src="" width="355"/>
 										 <div class="card-body py-0">
 											<button id="modi_cover" type="button" class="btn btn-danger">修改</button>
 										  </div>
@@ -284,6 +281,7 @@
 							</span>
 							<span style="float: right; cursor: pointer;" onclick="$.closePopLayer();">关闭</span>
 						</header>
+						
 						<div id="pop_img_wrap">
 							<img id="cropbox" />
 						</div>
@@ -294,6 +292,11 @@
 						</div>
 
 					</div>
+
+					<div id="uploading">
+						  <div class="loader-02"></div><span style="vertical-align: middle;">正在上传...</span><span id="up_content" style="padding-left: 4px; vertical-align: middle;">封面图</span>
+					</div>
+					
 					
 	
 					<!-- InstanceEndEditable -->

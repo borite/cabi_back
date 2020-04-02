@@ -169,16 +169,11 @@
 
 						</div>
 					  </div>
-						
-						 
 
 					</div>
-					
-
-					
+		
 					<script>	
 
-						
 						var _typeID=0;
 						var _currPage=1,
 							_psize=20,  //默认每页记录条数
@@ -224,9 +219,6 @@
 							})	
 					    }
 						
-						
-						
-						
 						//根据系列ID获取旗下产品
 						function getProductsByTypeID(typeID,currPage){
 							_typeID=typeID;
@@ -260,7 +252,7 @@
 													  <td>'+o.OrderNum+'</td>\
 													  <td>'+o.CollectionNum+'</td>\
 													  <td>'+formatTime(o.AddTime)+'</td>\
- 													  <td>'+o.IsLocked+'</td>\
+ 													  <td>'+(o.IsLocked==true?"<span style=\"color:red\">下架中</span>":"<span style=\"color:green\">正常</span>")+'</td>\
 													  <td>\
 														  <button data-tid="'+o.ID+'" class="btn btn-warning btn-sm btn-down" style="font-size:0.75rem; line-height:0.75rem;" onclick="updown('+o.ID+',0)">下架</button>\
  														  <button data-tid="'+o.ID+'" class="btn btn-primary btn-sm btn-up" style="font-size:0.75rem; line-height:0.75rem; display:none" onclick="updown('+o.ID+',1)">上架</button>\
@@ -269,19 +261,21 @@
 													  </td>\
 													</tr>';
 											$("#list_table").append(html);		
+											if(o.IsLocked==true){
+												$("#list_table tr:last-child").find('button.btn-up').show();
+												$("#list_table tr:last-child").find('button.btn-down').hide();
+											}
 										});
 									}
-									
-									
-									
-									//$("#pagination").whjPaging("setPage", 1, totalPage);
 								}
 							})
 						}
 						
 						
-					
-					
+						function updown(pid,isUp){
+							$.position
+						}
+						
 					
 					</script>
 					
