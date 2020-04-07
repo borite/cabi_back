@@ -245,19 +245,19 @@
 									if(res.Data.length>0){
 										$.each(res.Data,function(i,o){
 											var html='<tr>\
-													  <td><a href="#" target="_blank">'+o.NewTitle+'</a></td>\
+													  <td><a href="preview.html?pid='+o.ID+'" target="_blank">'+o.NewTitle+'</a></td>\
 													  <td>'+o.TypeName+'</td>\
 													  <td>￥'+o.Price+'元</td>\
 													  <td>'+o.ProductClickNum+'</td>\
 													  <td>'+o.OrderNum+'</td>\
 													  <td>'+o.CollectionNum+'</td>\
 													  <td>'+formatTime(o.AddTime)+'</td>\
- 													  <td>'+(o.IsLocked==true?"<span style=\"color:red\">下架中</span>":"<span style=\"color:green\">正常</span>")+'</td>\
+ 													  <td id="state_'+o.ID+'">'+(o.IsLocked==true?"<span style=\"color:red\">已下架</span>":"<span style=\"color:green\">正常</span>")+'</td>\
 													  <td>\
-														  <button data-tid="'+o.ID+'" class="btn btn-warning btn-sm btn-down" style="font-size:0.75rem; line-height:0.75rem;" onclick="updown('+o.ID+',0)">下架</button>\
- 														  <button data-tid="'+o.ID+'" class="btn btn-primary btn-sm btn-up" style="font-size:0.75rem; line-height:0.75rem; display:none" onclick="updown('+o.ID+',1)">上架</button>\
+														  <button id="btn_down_'+o.ID+'" data-tid="'+o.ID+'" class="btn btn-warning btn-sm btn-down" style="font-size:0.75rem; line-height:0.75rem;" onclick="updown('+o.ID+',0)">下架</button>\
+ 														  <button id="btn_up_'+o.ID+'" data-tid="'+o.ID+'" class="btn btn-primary btn-sm btn-up" style="font-size:0.75rem; line-height:0.75rem; display:none" onclick="updown('+o.ID+',1)">上架</button>\
  														  <button data-tid="'+o.ID+'" class="btn btn-sm btn-info ml-3 btn-del" style="font-size:0.75rem; line-height:0.75rem;" onclick="del('+o.ID+')">修改</button>\
-														  <button data-tid="'+o.ID+'" class="btn btn-sm btn-danger ml-3 btn-del" style="font-size:0.75rem; line-height:0.75rem;" onclick="del('+o.ID+')">删除</button>\
+														  <button id="del_'+o.ID+'" data-tid="'+o.ID+'" class="btn btn-sm btn-danger ml-3 btn-del" style="font-size:0.75rem; line-height:0.75rem;" onclick="del('+o.ID+')">删除</button>\
 													  </td>\
 													</tr>';
 											$("#list_table").append(html);		
@@ -272,8 +272,46 @@
 						}
 						
 						
-						function updown(pid,isUp){
-							$.position
+						function del(proID){
+							
+							$.ajax("https://customer.imotstudio.net/cabi/api/DeleteProduct?productID="+proID,{
+								method:'delete',
+								beforeSend:function(){
+									$("#del_"+proID).prop("disabled",true);
+								},
+								success:function(res){
+									console.log(res);
+									getProductsByTypeID(_typeID,_currPage);
+								},
+								complete:function(res){
+									$("#del_"+proID).prop("disabled",false);
+								}
+							})
+						}
+						
+						
+						function updown(pid,isup){
+							$.post("https://customer.imotstudio.net/cabi/api/product/DownUpProduct",{proID:pid,isUp:isup}).done(function(res){
+								console.log(res.Message);
+								$("#btn_down_"+pid).prop('disabled',true);
+								$("#btn_up_"+pid).prop('disabled',true);
+								if(res.Code==200){
+									if(isup==0){	//由正常变为下架状态
+										$("#btn_down_"+pid).css('display','none');
+										$("#btn_up_"+pid).css('display','inline-block');
+										$("#state_"+pid).html("<span style=\"color:red\">已下架</span>");
+										
+									}else{
+										$("#btn_down_"+pid).css('display','inline-block');
+										$("#btn_up_"+pid).css('display','none');
+										$("#state_"+pid).html("<span style=\"color:green\">正常</span>");
+									}
+									
+								}
+							}).always(function(){
+								$("#btn_down_"+pid).prop('disabled',false);
+								$("#btn_up_"+pid).prop('disabled',false);
+							})
 						}
 						
 					

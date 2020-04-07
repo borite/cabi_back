@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script src="vendors/base/vendor.bundle.base.js"></script>
+		<style>
+			*{margin: 0px; padding: 0px;}
+			#wrap{
+				width: 750px;
+				margin: 0 auto;
+			}
+		
+		</style>
+		<script>
+			
+			var pid=GetQueryString("pid");
+			if(pid==""){
+				alert("参数错误！");
+				location.replace("product_manage.html");
+			}else{
+				console.log(pid);	
+			}
+			
+			//获取URL中指定的参数值
+			function GetQueryString(name) { 
+			  var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); 
+			  var r = window.location.search.substr(1).match(reg); //获取url中"?"符后的字符串并正则匹配
+			  var context = ""; 
+			  if (r != null) 
+				 context = r[2]; 
+			  reg = null; 
+			  r = null; 
+			  return context == null || context == "" || context == "undefined" ? "" : context; 
+			}
+				//格式化时间
+			function formatTime(theTime){
+				var f=theTime.replace('T',' ');
+				f=f.substring(0,f.lastIndexOf('.'));
+				return f;
+			}
+			
+		
+		</script>
+		
+	</head>
+
+	<body>
+		
+		<div id="wrap">
+		
+		
+		</div>
+		
+	</body>
+</html>

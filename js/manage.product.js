@@ -1,7 +1,7 @@
 // JavaScript Document
 
 var productInfo={}
-var newID=75;
+var newID=-1;
 var i=0;
 $(function () {
 	
@@ -450,7 +450,7 @@ function addProduct(){
 		
 		var businessParam = {
              imgs: [{ext:Ext , baseURL:img }],
-             ID: 76
+             ID: newID
         };
 			
 		//上传封面图
