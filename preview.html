@@ -3,18 +3,133 @@
 	<head>
 		<meta charset="utf-8">
 		<title></title>
+		<link rel="stylesheet" href="css/swiper.min.css">
 		<script src="vendors/base/vendor.bundle.base.js"></script>
+		<script src="js/swiper.min.js"></script>
 		<style>
 			*{margin: 0px; padding: 0px;}
 			#wrap{
-				width: 750px;
-				margin: 0 auto;
+				width: 500px;
+				margin: 40px auto;
 			}
-		
+			
+			#name{
+				font-size: 22px;
+			}
+			
+			#intro{
+				font-size: 16px;
+				margin-top: 20px;
+			}
+			
+			#poster{
+				margin-top: 30px;
+			}
+			#scrollImgs{
+				margin-top: 50px;
+			}
+			
+			#price{
+				font-size: 18px;
+				color: #EBC209;
+				font-weight: bold;
+				margin-top: 20px;
+			}
+			.section-title{
+				text-align: center;
+				margin-bottom: 20px;
+			}
+			
+			.info-item{
+				display: flex;
+				width: 100%;
+				justify-content: space-between;
+				color: rgba(163,163,163,1.00);
+				margin-top: 20px;
+			}
+			
+			#cloth_info{
+				color: rgba(163,163,163,1.00);
+				margin-top: 20px;
+			}
+			#design_txt{
+				color: rgba(163,163,163,1.00);
+				line-height: 26px;
+			}
+			
+			#footer_rights {
+				font-size: 0.875rem; 
+				margin: .5rem 0;
+				text-align: center;
+				padding: 1rem 0;
+				display:inline-flex;
+				flex-direction: column;
+				justify-content: center;
+				align-content: center;
+				width: 100%;
+				border-top: 1px solid #D8D8D8;
+			}
+
+			#footer_rights a{
+				margin-top: 0.5rem;
+				font-size: 0.8rem;
+				text-decoration: none;
+				color: #006AFF;
+			}
+			
+			#sub_title{
+				margin-top: 16px;
+				color: #4A4A4A;
+				font-weight:bold;
+			}
 		</style>
 		<script>
 			
 			var pid=GetQueryString("pid");
+			
+			
+			$(function(){
+				$.get("https://customer.imotstudio.net/cabi/api/product/GetProductInfoForBackEnd?pid="+pid).done(function(res){
+					console.log(res);
+					if(res.Code==200){
+						document.title=res.Data.NewTitle;
+						$("#name").text(res.Data.NewTitle);
+						$("#sub_title").text(res.Data.SubTitle);
+						$("#poster").attr('src',res.Data.CollectionImg);
+						$("#intro").text(res.Data.Discribe);
+						$("#price").text("￥"+res.Data.Price+".00元");
+						$("#cloth_img").attr('src',res.Data.ImgList);
+						//轮播展示
+						var imgs=res.Data.ListImg;
+						imgs=imgs.split(',');
+						if(imgs.length>0){
+							imgs.forEach(function(o,i){
+								let htmlStr='<div class="swiper-slide"><img src="'+o+'" width="500"/></div>';
+								$("#swiper > .swiper-wrapper").append(htmlStr);
+								var mySwiper = new Swiper ('#swiper', {
+									loop: true, // 循环模式选项
+
+									// 如果需要前进后退按钮
+									navigation: {
+									  nextEl: '.swiper-button-next',
+									  prevEl: '.swiper-button-prev',
+									}
+								  })        
+							});
+						}
+						
+						$("#size").text(res.Data.SizeInfo);
+						$("#color").text(res.Data.Color);
+						$("#scene").text(res.Data.Scene);
+						$("#design_txt").text(res.Data.DesignConcept);
+						$("#cloth_info").text(res.Data.ClothInfo);
+						$("#info_img").attr('src',res.Data.Contents);
+									 
+					}
+				})
+			})
+			
+			
 			if(pid==""){
 				alert("参数错误！");
 				location.replace("product_manage.html");
@@ -33,7 +148,9 @@
 			  r = null; 
 			  return context == null || context == "" || context == "undefined" ? "" : context; 
 			}
-				//格式化时间
+			
+			
+			//格式化时间
 			function formatTime(theTime){
 				var f=theTime.replace('T',' ');
 				f=f.substring(0,f.lastIndexOf('.'));
@@ -48,9 +165,61 @@
 	<body>
 		
 		<div id="wrap">
-		
+			<h3 id="name"></h3>
+			<h4 id="sub_title"></h4>
+			<section id="intro"></section>
+			<div id="price"></div>
+			<img id="poster" width="500" style="display: block;"/>
+			
+			<section id="scrollImgs">
+				<h4 class="section-title">轮播展示</h4>
+				<div id="swiper" class="swiper-container">
+					<div class="swiper-wrapper">
+
+					</div>
+					<div class="swiper-button-prev"></div>
+					<div class="swiper-button-next"></div>
+				</div>		
+			</section>
+			
+			<section id="info" style="margin-top: 40px;">
+				<h4 class="section-title">服装信息</h4>
+				<div class="info-item">
+					<span>尺码</span>
+					<span id="size"></span>
+				</div>
+				<div class="info-item">
+					<span>配色</span>
+					<span id="color"></span>
+				</div>
+				<div class="info-item">
+					<span>适用场合</span>
+					<span id="scene"></span>
+				</div>
+			</section>
+			
+			<section id="info" style="margin-top: 40px;">
+				<h4 class="section-title">面料信息</h4>
+				<div id="cloth_info"></div>
+				<img id="cloth_img" src="" alt="" width="500"/>
+			</section>		
+			
+			<section id="design" style="margin-top: 40px;">
+				<h4 class="section-title">设计理念</h4>
+				<div id="design_txt"></div>
+			</section>
+			
+			<section id="pro_info" style="margin-top: 40px;">
+				<h4 class="section-title">产品描述详情</h4>
+				<img id="info_img" src="" alt="" width="500" />
+			</section>	
 		
 		</div>
+		
+		<footer id="footer_rights">
+			<span>察必后台管理系统 Copyright © 2020  All rights reserved.</span>
+			<a href="https://www.imotstudio.net" target="_blank">内蒙古元本唐文化传媒有限公司提供技术支持</a>
+		</footer>
 		
 	</body>
 </html>

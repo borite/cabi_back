@@ -1,0 +1,338 @@
+<!doctype html>
+<html><!-- InstanceBegin template="/Templates/temp.dwt" codeOutsideHTMLIsLocked="false" -->
+	<head>
+		  <!-- Required meta tags -->
+	  <meta charset="utf-8">
+	  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	  <!-- InstanceBeginEditable name="doctitle" -->
+	  <title>编辑产品</title>
+	  <!-- InstanceEndEditable -->
+	  <!-- plugins:css -->
+	  <link rel="stylesheet" href="vendors/mdi/css/materialdesignicons.min.css">
+	  <link rel="stylesheet" href="vendors/base/vendor.bundle.base.css">
+	  <!-- endinject -->
+	  <!-- plugin css for this page -->
+	  <link rel="stylesheet" href="vendors/datatables.net-bs4/dataTables.bootstrap4.css">
+	  <!-- End plugin css for this page -->
+	  <!-- inject:css -->
+	  <link rel="stylesheet" href="css/style.css">
+	  <!-- endinject -->
+	  <link rel="shortcut icon" href="images/favicon.png" />
+	  <script src="vendors/base/vendor.bundle.base.js"></script>
+	  <script src="js/common.js"></script>
+	  <!-- InstanceBeginEditable name="head" -->
+	  <link rel="stylesheet" href="css/cropper.min.css">
+	  <script src="js/jquery.validate.min.js"></script>
+	  <script src="js/manage.product.js"></script>
+	  <script src="js/jquery.poplayer.js"></script>
+	  <script src="js/cropper.min.js"></script>
+	  <style>
+		  #series{
+			  color:#495057;
+		  }
+		
+	  </style>
+	  <!-- InstanceEndEditable -->
+	</head>
+
+	<body>
+		
+		<div class="container-scroller">
+		  <!-- partial:partials/_navbar.html -->
+  		  <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+              <div class="navbar-brand-wrapper d-flex justify-content-center">
+				<div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">  
+				  <a class="navbar-brand brand-logo" href="index.html"><img src="images/logo22.png" alt="logo" height="60"/></a>
+				  <a class="navbar-brand brand-logo-mini" href="index.html"><img src="images/logo.png" alt="logo"/></a>
+				  <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+					<span class="mdi mdi-sort-variant"></span>
+				  </button>
+				</div>  
+			  </div>
+			  <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+
+				<ul class="navbar-nav navbar-nav-right">
+
+				  <li class="nav-item nav-profile dropdown">
+					<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
+					  <span class="nav-profile-name">这里是用户名</span>
+					</a>
+					<div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
+					  <a class="dropdown-item">
+						<i class="mdi mdi-settings text-primary"></i>
+						修改密码
+					  </a>
+					  <a class="dropdown-item">
+						<i class="mdi mdi-logout text-primary"></i>
+						退出登录
+					  </a>
+					</div>
+				  </li>
+				</ul>
+				<button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+				  <span class="mdi mdi-menu"></span>
+				</button>
+			  </div>
+		  </nav>
+		  <div class="container-fluid page-body-wrapper">
+			   <!-- partial:partials/_sidebar.html -->
+			  <nav class="sidebar sidebar-offcanvas" id="sidebar">
+				<ul class="nav">
+				  <li class="nav-item">
+					<a class="nav-link" href="manage.html">
+					  <i class="mdi mdi-home menu-icon"></i>
+					  <span class="menu-title">首页</span>
+					</a>
+				  </li>
+				  <li class="nav-item">
+					<a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+					  <i class="mdi mdi-circle-outline menu-icon"></i>
+					  <span class="menu-title">轮播图管理</span>
+					  <i class="menu-arrow"></i>
+					</a>
+					<div class="collapse" id="ui-basic">
+					  <ul class="nav flex-column sub-menu">
+						<li class="nav-item"> <a class="nav-link" href="banner_default.html">首页轮播图</a></li>
+						<li class="nav-item"> <a class="nav-link" href="banner_cabi.html">察必页轮播图</a></li>
+					  </ul>
+					</div>
+				  </li>
+				  <li class="nav-item">
+					<a class="nav-link" href="product_type.html">
+					  <i class="mdi mdi-view-headline menu-icon"></i>
+					  <span class="menu-title">产品系列管理</span>
+					</a>
+				  </li>
+
+				  <li class="nav-item">
+					<a class="nav-link" href="product_manage.html">
+					  <i class="mdi mdi-grid-large menu-icon"></i>
+					  <span class="menu-title">产品管理</span>
+					</a>
+				  </li>
+					
+				  <li class="nav-item">
+					<a class="nav-link" href="pages/tables/basic-table.html">
+					  <i class="mdi mdi-book-variant menu-icon"></i>
+					  <span class="menu-title">预约管理</span>
+					</a>
+				  </li>
+					
+				  <li class="nav-item">
+					<a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+					  <i class="mdi mdi-account menu-icon"></i>
+					  <span class="menu-title">个人用户设置</span>
+					  <i class="menu-arrow"></i>
+					</a>
+					<div class="collapse" id="auth">
+					  <ul class="nav flex-column sub-menu">
+						<li class="nav-item"> <a class="nav-link" href="pages/samples/login.html">修改密码</a></li>
+						<li class="nav-item"> <a class="nav-link" href="pages/samples/login-2.html">退出登录</a></li>
+					  </ul>
+					</div>
+				  </li>
+				</ul>
+			  </nav>
+			  
+			        <!-- partial -->
+			  <div class="main-panel">
+				<div class="content-wrapper">
+					<!-- InstanceBeginEditable name="ConetentArea" -->
+					
+					<div class="col-12 grid-margin stretch-card">
+						 
+ 						<div class="card">
+							<div class="card-body">
+							  <h4 class="card-title" style="font-size:1.5rem;">修改产品信息</h4>
+							  <p class="card-description mb-3">红色星号为必填项</p>
+							  <p class="card-description mb-4">
+								<span id="tit_step1" class="text-primary">Step1-产品基础信息</span>
+								<span>&nbsp;/&nbsp;</span>
+								<span id="tit_step2">Step2-产品相关图片</span>
+							  </p>
+							  <form id="step1" class="forms-sample" >
+								<div class="form-group">
+								  <label for="title"><span style="color: #E40F12;">*</span>产品名称</label>
+								  <input type="text" class="form-control" id="title" name="title" placeholder="产品名称">
+								</div>
+								  
+								<div class="form-group">
+								  <label for="sub_title">产品副标题</label>
+								  <input type="text" class="form-control" id="sub_title" name="sub_title" placeholder="副标题（最多12个字符）">
+								</div>
+								  
+								<div class="form-group">
+								  <label for="series"><span style="color: #E40F12;">*</span>产品所属系列</label>
+								  <select class="form-control has-danger" id="series" name="series">
+								  </select>
+								</div> 
+								  
+								 <div class="form-group">
+								  <label for="description"><span style="color: #E40F12;">*</span>产品描述</label>
+								  <textarea class="form-control" id="description" name="description" rows="4" placeholder="产品描述"></textarea>
+								</div>
+								  
+  								<div class="form-group">
+ 									<label for="price"><span style="color: #E40F12;">*</span>产品价格</label>
+								    <input type="text" class="form-control" id="price" name="price" placeholder="产品价格" style="line-height: 1.5em;" />
+								</div> 
+								  
+								<div class="form-group">
+								  <label for="color"><span style="color: #E40F12;">*</span>产品颜色</label>
+								  <input type="text" class="form-control" id="color" name="color" placeholder="产品颜色，多个用逗号分隔，如：蓝色，红色" />
+								</div>		
+								  
+								<div class="form-group">
+								  <label for="size"><span style="color: #E40F12;">*</span>产品尺码</label>
+								  <input class="form-control" id="size" name="size" placeholder="产品尺码,多个尺码用逗号分隔，如:S,L,XL" />
+								</div>		
+								
+	  
+								<div class="form-group">
+								  <label for="scene"><span style="color: #E40F12;">*</span>适用场景</label>
+								  <input class="form-control" id="scene" name="scene" placeholder="适用场景">
+								</div>
+		  
+
+								<div class="form-group">
+								  <label for="concept">设计理念</label>
+								  <textarea class="form-control" id="concept" name="concept" rows="4" placeholder="设计理念" style="line-height: 1.5em;"></textarea>
+								</div>
+								<button id="do_step1" type="button" class="btn btn-primary mr-2">确定，下一步</button>
+								<button type="button" class="btn btn-light btn-cancel">取消</button>
+							  </form>
+								
+								
+								
+							  <form id="step2" class="forms-sample d-none">  
+								<div class="form-group">
+								  <label class="my-2"><span style="color: #E40F12;">*</span>添加封面图</label>
+							      <div class="col mt-3">
+									  <a id="btn_add_poster" class="add_img"></a>
+									  <input id="poster_select" type="file" accept="image/gif,image/png,image/jpeg,image/bmp" />
+									  <div class="card d-none border-0 flex-row">
+									  	 <img id="product_cover" src="" width="355"/>
+										 <div class="card-body py-0">
+											<button id="modi_cover" type="button" class="btn btn-danger">修改</button>
+										  </div>
+									  </div>  
+								  </div>
+								</div>
+								  
+								<div class="form-group" style="min-height: 300px;">
+								  <label class="d-block">
+									  <span style="color:#E40F12">*</span>添加展示图（最多5张）
+									  <a id="btn_add_muti" class="btn btn-primary btn-sm text-white float-right">添加轮播图</a>
+									  <input id="zhanshi_select" class="d-none" type="file" accept="image/gif,image/png,image/jpeg,image/bmp" />
+								  </label>
+								  <!--展示照片-->
+								  <div id="zs_pics" class="col mt-4 flex-row d-flex">
+										
+								  </div>
+								</div>
+
+								  
+								<!--添加面料照片-->
+								<div class="form-group" style="min-height: 280px;">
+								  <label class="d-block">
+									  <span style="color:#E40F12">*</span>添加面料图片
+								  </label>
+								  
+								  <div class="col mt-3">
+									  <input id="img_select" class="d-none" type="file" accept="image/gif,image/png,image/jpeg,image/bmp" />
+									  <a id="btn_add_cloth" class="add_img"></a> 
+									  <div class="card d-none border-0 flex-row">
+									  	 <img id="cloth_img" src="" width="350"/>
+										 <div class="card-body py-0">
+											<button id="modi_img" type="button" class="btn btn-danger">修改</button>
+										 </div>
+									  </div>  						     
+									  <input type="text" class="form-control mt-3" id="cloth_text" name="cloth_text" placeholder="面料说明">
+								  </div>
+								</div>
+								  
+								  
+							    <!--添加详情照片-->
+								<div class="form-group" style="min-height: 280px;">
+								  <label class="d-block">
+									  <span style="color:#E40F12">*</span>添加详情图片
+								  </label>
+								  
+								  <div class="col mt-3">
+									  <input id="info_select" class="d-none" type="file" accept="image/gif,image/png,image/jpeg,image/bmp" />
+									  <a id="btn_add_info" class="add_img"></a> 
+									  <div class="card d-none border-0 flex-row">
+									  	 <img id="info_img" src="" width="400"/>
+										 <div class="card-body py-0">
+											<button id="modi_info_img" type="button" class="btn btn-danger">修改</button>
+										 </div>
+									  </div>  						     
+									 
+								  </div>
+								</div>
+								  
+								<button id="back_step1" type="button" class="btn btn-primary mr-2">上一步</button>
+								<button id="btn_submit" type="button" class="btn btn-primary mr-2" onClick="addProduct()">确定</button>
+								<button id="btn_cancel" type="button" class="btn btn-light">取消</button>
+								
+							  </form>
+						   </div>
+						</div>					 
+					 </div>
+
+					<!--图片上传弹出层-->
+
+					<div id="uppic_wrap" class="clearfix">
+						<header class="up_header clearfix">
+							<span style="float: left;"><b>轮播图上传</b>
+								<i style="font-style:normal; font-size:12px;">(为保证图片呈现效果，对选取框限制了比例，请使用<b>750x320或大于该尺寸</b>横版图片,最大2MB)</i>
+							</span>
+							<span style="float: right; cursor: pointer;" onclick="$.closePopLayer();">关闭</span>
+						</header>
+						
+						<div id="pop_img_wrap">
+							<img id="cropbox" />
+						</div>
+
+						<div class="img-prev-wrap">
+							<div id="avatat_prev"></div>
+							<div id="btn_save">保存</div>
+						</div>
+
+					</div>
+
+					<div id="uploading">
+						  <div class="loader-02"></div><span style="vertical-align: middle;">正在上传...</span><span id="up_content" style="padding-left: 4px; vertical-align: middle;">封面图</span>
+					</div>
+					
+					
+					
+					<!-- InstanceEndEditable -->
+				</div>
+				
+				<footer id="footer_rights">
+				    <span>察必后台管理系统 Copyright © 2020  All rights reserved.</span>
+					<a href="https://www.imotstudio.net" target="_blank">内蒙古元本唐文化传媒有限公司提供技术支持</a>
+				</footer>
+				  
+			  </div>
+			   
+		  </div>
+
+		</div>
+		
+		<!-- container-scroller -->
+		<!-- plugins:js -->
+
+		<!-- endinject -->
+		<!-- Plugin js for this page-->
+		<!-- End plugin js for this page-->
+		<!-- inject:js -->
+		<script src="js/off-canvas.js"></script>
+		<script src="js/hoverable-collapse.js"></script>
+		<script src="js/template.js"></script>
+		<!-- endinject -->
+		<!-- Custom js for this page-->
+		<!-- End custom js for this page-->
+	</body>
+<!-- InstanceEnd --></html>

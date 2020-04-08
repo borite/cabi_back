@@ -256,7 +256,7 @@
 													  <td>\
 														  <button id="btn_down_'+o.ID+'" data-tid="'+o.ID+'" class="btn btn-warning btn-sm btn-down" style="font-size:0.75rem; line-height:0.75rem;" onclick="updown('+o.ID+',0)">下架</button>\
  														  <button id="btn_up_'+o.ID+'" data-tid="'+o.ID+'" class="btn btn-primary btn-sm btn-up" style="font-size:0.75rem; line-height:0.75rem; display:none" onclick="updown('+o.ID+',1)">上架</button>\
- 														  <button data-tid="'+o.ID+'" class="btn btn-sm btn-info ml-3 btn-del" style="font-size:0.75rem; line-height:0.75rem;" onclick="del('+o.ID+')">修改</button>\
+ 														  <a href="edit_product.html?act=edit&pid='+o.ID+'" class="btn btn-sm btn-info ml-3 btn-del" style="font-size:0.75rem; line-height:0.75rem; color:#fff;">修改</a>\
 														  <button id="del_'+o.ID+'" data-tid="'+o.ID+'" class="btn btn-sm btn-danger ml-3 btn-del" style="font-size:0.75rem; line-height:0.75rem;" onclick="del('+o.ID+')">删除</button>\
 													  </td>\
 													</tr>';

@@ -3,10 +3,28 @@
 var productInfo={}
 var newID=-1;
 var i=0;
+var isEdit="";
 $(function () {
 	
 	getTypeList();
-		
+	newID=GetQueryString("pid");
+	
+	isEdit=GetQueryString('act');
+	console.log(isEdit);
+	
+
+	
+	//如果是编辑状态
+	if(isEdit=="edit"){
+		if(newID==""){
+			alert("参数错误！");
+			return false;
+		}
+		//绑定产品
+		BindProductInfo();
+	}
+	
+	
 	$.validator.setDefaults({
 		errorClass: 'error-text',
 		highlight: function (element) {
@@ -94,16 +112,33 @@ $(function () {
 				"DesignConcept": $.trim($("#concept").val())  //设计理念
 			}
 			
-			$.post("https://customer.imotstudio.net/cabi/api/product/AddProduct",productInfo).done(function(res){
-				if(res.Code==200){
-					newID=res.Data;
-					//进入第二步
-					$("#step1").addClass('d-none');
-					$("#step2").removeClass('d-none');
-					$("#tit_step1").removeClass('text-primary');
-					$("#tit_step2").addClass('text-primary');
-				}
-			})
+			if(isEdit==""){
+				$.post("https://customer.imotstudio.net/cabi/api/product/AddProduct",productInfo).done(function(res){
+					if(res.Code==200){
+						newID=res.Data;
+						//进入第二步
+						$("#step1").addClass('d-none');
+						$("#step2").removeClass('d-none');
+						$("#tit_step1").removeClass('text-primary');
+						$("#tit_step2").addClass('text-primary');
+					}
+				})
+			}else{
+				productInfo["ID"]=newID;
+				$.ajax('https://customer.imotstudio.net/cabi/api/product/UpdateProductSetpOne',{
+					method:'put',
+					data:productInfo,
+					success:function(res){
+						if(res.Code==200){
+							//进入第二步
+							$("#step1").addClass('d-none');
+							$("#step2").removeClass('d-none');
+							$("#tit_step1").removeClass('text-primary');
+							$("#tit_step2").addClass('text-primary');
+						}
+					}
+				})
+			}
 		}
 
 	});
@@ -394,6 +429,8 @@ function getTypeList() {
 			} else {
 				alert("您还没有设置产品系列，请先设置产品系列");
 			}
+			
+			
 		} else {
 			alert("您还没有产品系列，请先添加产品系列！");
 			location.href = "product_type.html";
@@ -403,8 +440,7 @@ function getTypeList() {
 
 
 //检查图片是否都上传
-function checkImgs()
-{
+function checkImgs(){
 	//产品封面图
 	var product_cover=$("#product_cover").attr("src") || null;
 	//展示图片
@@ -508,21 +544,79 @@ function addProduct(){
 }
 
 
-
+//获取URL中指定的参数值
+function GetQueryString(name) { 
+	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); 
+	var r = window.location.search.substr(1).match(reg); //获取url中"?"符后的字符串并正则匹配
+	var context = ""; 
+	if (r != null) 
+		 context = r[2]; 
+	reg = null; 
+	r = null; 
+	 return context == null || context == "" || context == "undefined" ? "" : context; 
+}
 
 
 function cancelAddProduct(){
-	if(newID!==0 || newID!==null){	
-		$.post("https://customer.imotstudio.net/cabi/api/product/DeleteProduct",{productID:newID}).done(function(res){
-			console.log(res);
-		}).fail(function(err){
-			console.log(err);
-		})
-	}	
+    if(isEdit==""){
+		if(newID!==0 || newID!==null){	
+			$.post("https://customer.imotstudio.net/cabi/api/product/DeleteProduct",{productID:newID}).done(function(res){
+				console.log(res);
+			}).fail(function(err){
+				console.log(err);
+			})
+		}	
+	}
 	location.replace('product_manage.html');
 }
 
 
+//绑定产品信息
+function BindProductInfo(){
+	$.get("https://customer.imotstudio.net/cabi/api/product/GetProductInfoForBackEnd?pid="+newID).done(function(res){
+					console.log(res);
+					if(res.Code==200){
+						document.title=res.Data.NewTitle;
+						$("#title").val(res.Data.NewTitle);
+						$("#sub_title").val(res.Data.SubTitle);
+						
+						//由于获取产品分类是异步，所以推迟350ms绑定产品所属系列
+						setTimeout(function(){
+							$("#series option[value=\""+res.Data.ThemeID+"\"]").prop("selected",true);  //如果值一样 就选中对应的option,
+						},350);
+						
+						$("#description").val(res.Data.Discribe);
+						$("#price").val(res.Data.Price);
+						$("#color").val(res.Data.Color);
+						$("#size").val(res.Data.SizeInfo);
+						$("#scene").val(res.Data.Scene);
+						$("#concept").val(res.Data.DesignConcept);
+						
+						//绑定封面图
+						$("#product_cover").attr("src", res.Data.CollectionImg);
+						$("#btn_add_poster").addClass("d-none");
+						$("#poster_select").next('.card').removeClass("d-none");
+						/*$("#poster").attr('src',res.Data.CollectionImg);
+						$("#intro").text(res.Data.Discribe);
+						$("#price").text("￥"+res.Data.Price+".00元");
+						$("#cloth_img").attr('src',res.Data.ImgList);
+						//轮播展示
+						var imgs=res.Data.ListImg;
+						imgs=imgs.split(',');
+						if(imgs.length>0){
+							
+						}
+						
+						$("#size").text(res.Data.SizeInfo);
+						$("#color").text(res.Data.Color);
+						$("#scene").text(res.Data.Scene);
+						$("#design_txt").text(res.Data.DesignConcept);
+						$("#cloth_info").text(res.Data.ClothInfo);
+						$("#info_img").attr('src',res.Data.Contents);*/
+									 
+					}
+				})
+}
 
 
 
