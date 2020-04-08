@@ -4,6 +4,9 @@ var productInfo={}
 var newID=-1;
 var i=0;
 var isEdit="";
+
+
+
 $(function () {
 	
 	getTypeList();
@@ -384,7 +387,8 @@ function addImgBlock(img64){
 					<button type="button" class="btn btn-danger btn-sm" onclick="removeImgBlock(\'d'+i+'\')">删除</button>\
 				</div>\
 			  </div>';
-    $("#zs_pics").append(temp);
+	$("#zs_pics").append(temp);
+	i++;
 }
 
 //移除滚动图
@@ -428,9 +432,7 @@ function getTypeList() {
 				});
 			} else {
 				alert("您还没有设置产品系列，请先设置产品系列");
-			}
-			
-			
+			}			
 		} else {
 			alert("您还没有产品系列，请先添加产品系列！");
 			location.href = "product_type.html";
@@ -596,6 +598,20 @@ function BindProductInfo(){
 						$("#product_cover").attr("src", res.Data.CollectionImg);
 						$("#btn_add_poster").addClass("d-none");
 						$("#poster_select").next('.card').removeClass("d-none");
+
+						//绑定展示图
+						var imgs=res.Data.ListImg;
+						imgs=imgs.split(',');
+						if(imgs.length>0){
+							imgs.forEach(element => {
+								addImgBlock(element);
+							});
+						}
+						
+						//绑定面料图
+
+
+
 						/*$("#poster").attr('src',res.Data.CollectionImg);
 						$("#intro").text(res.Data.Discribe);
 						$("#price").text("￥"+res.Data.Price+".00元");
