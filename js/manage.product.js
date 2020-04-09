@@ -483,65 +483,87 @@ function addProduct(){
 			target:'uploading'
 		});
 
-	    var img= $("#product_cover").attr("src");
-		var Ext=img.substr(11,3);
+		var img= $("#product_cover").attr("src");
+		var Ext="";
 		
 		var businessParam = {
              imgs: [{ext:Ext , baseURL:img }],
              ID: newID
-        };
+        };	
+	
+		if(isEdit=="edit"){
 			
-		//上传封面图
-		$.post("https://customer.imotstudio.net/cabi/api/UpdateCollection",businessParam).then(function(res){
-			console.log("上传产品封面图：",res);
-			var result=JSON.parse(res);
-			//console.log(result.code);
-			if(result.code==200){
-				$("#up_content").text('展示图');
-				businessParam.imgs=[];
-				$("#zs_pics img.zs").each(function(i,o){
-					img=$(o).attr('src');
+			//产品封面图修改
+			var coverImgUpdate;
+			
+			var imgList;
+			
+			if (img.indexOf('http://') == -1 || img.indexOf('https://') == -1) {
+					Ext = img.substr(11, 3);
+					$.post("https://customer.imotstudio.net/cabi/api/UpdateCollection",businessParam).done(function(res){
+					console.log("上传产品封面图：",res);
+					var result=JSON.parse(res);
+					if(result.code==200){
+						$("#up_content").text('展示图');
+						
+					}
+				})
+			}
+		}else{
+			Ext=img.substr(11,3)
+			//上传封面图
+			$.post("https://customer.imotstudio.net/cabi/api/UpdateCollection",businessParam).then(function(res){
+				console.log("上传产品封面图：",res);
+				var result=JSON.parse(res);
+				//console.log(result.code);
+				if(result.code==200){
+					$("#up_content").text('展示图');
+					businessParam.imgs=[];
+					$("#zs_pics img.zs").each(function(i,o){
+						img=$(o).attr('src');
+						Ext=img.substr(11,3);
+						var img={ext:Ext,baseURL:img};
+						businessParam.imgs.push(img);
+					});
+					return $.post("https://customer.imotstudio.net/cabi/api/productList",businessParam);
+				}
+			}).then(function(res){
+				var result=JSON.parse(res);
+				console.log('上传展示图：',result);
+				if(result.code==200){
+					$("#up_content").text('面料信息');
+					img=$("#cloth_img").attr('src');
 					Ext=img.substr(11,3);
 					var img={ext:Ext,baseURL:img};
+					businessParam.imgs=[];
 					businessParam.imgs.push(img);
-				});
-				return $.post("https://customer.imotstudio.net/cabi/api/productList",businessParam);
-			}
-		}).then(function(res){
-			var result=JSON.parse(res);
-			console.log('上传展示图：',result);
-			if(result.code==200){
-				$("#up_content").text('面料信息');
-				img=$("#cloth_img").attr('src');
-				Ext=img.substr(11,3);
-				var img={ext:Ext,baseURL:img};
-				businessParam.imgs=[];
-				businessParam.imgs.push(img);
-				businessParam['intro']=$("#cloth_text").val();
-				return $.post("https://customer.imotstudio.net/cabi/api/UpdateClothInfoIMG",businessParam);
-			}	
-		}).then(function(res){
-			var result=JSON.parse(res);
-			if(result.code==200){
-				$("#up_content").text('详情图片');
-				img=$("#info_img").attr('src');
-				Ext=img.substr(11,3);
-				var img={ext:Ext,baseURL:img};
-				businessParam.imgs=[];
-				businessParam.imgs.push(img);
-				return $.post("https://customer.imotstudio.net/cabi/api/UpdateInfoList",businessParam);
-			}
-		}).done(function(res){
-			var result=JSON.parse(res);
-			if(result.code==200){
-				alert("添加产品成功");
-				location.replace('product_manage.html');
-			}else{
-				alert(result.message);
-			}
-		}).always(function(res){
-			$.closePopLayer();
-		});
+					businessParam['intro']=$("#cloth_text").val();
+					return $.post("https://customer.imotstudio.net/cabi/api/UpdateClothInfoIMG",businessParam);
+				}	
+			}).then(function(res){
+				var result=JSON.parse(res);
+				if(result.code==200){
+					$("#up_content").text('详情图片');
+					img=$("#info_img").attr('src');
+					Ext=img.substr(11,3);
+					var img={ext:Ext,baseURL:img};
+					businessParam.imgs=[];
+					businessParam.imgs.push(img);
+					return $.post("https://customer.imotstudio.net/cabi/api/UpdateInfoList",businessParam);
+				}
+			}).done(function(res){
+				var result=JSON.parse(res);
+				if(result.code==200){
+					alert("添加产品成功");
+					location.replace('product_manage.html');
+				}else{
+					alert(result.message);
+				}
+			}).always(function(res){
+				$.closePopLayer();
+			});
+
+		}	
 		
 }
 
@@ -574,70 +596,66 @@ function cancelAddProduct(){
 
 
 //绑定产品信息
-function BindProductInfo(){
-	$.get("https://customer.imotstudio.net/cabi/api/product/GetProductInfoForBackEnd?pid="+newID).done(function(res){
-					console.log(res);
-					if(res.Code==200){
-						document.title=res.Data.NewTitle;
-						$("#title").val(res.Data.NewTitle);
-						$("#sub_title").val(res.Data.SubTitle);
-						
-						//由于获取产品分类是异步，所以推迟350ms绑定产品所属系列
-						setTimeout(function(){
-							$("#series option[value=\""+res.Data.ThemeID+"\"]").prop("selected",true);  //如果值一样 就选中对应的option,
-						},350);
-						
-						$("#description").val(res.Data.Discribe);
-						$("#price").val(res.Data.Price);
-						$("#color").val(res.Data.Color);
-						$("#size").val(res.Data.SizeInfo);
-						$("#scene").val(res.Data.Scene);
-						$("#concept").val(res.Data.DesignConcept);
-						
-						//绑定封面图
-						$("#product_cover").attr("src", res.Data.CollectionImg);
-						$("#btn_add_poster").addClass("d-none");
-						$("#poster_select").next('.card').removeClass("d-none");
+function BindProductInfo() {
+	$.get("https://customer.imotstudio.net/cabi/api/product/GetProductInfoForBackEnd?pid=" + newID).done(function (res) {
+		console.log(res);
+		if (res.Code == 200) {
+			document.title = res.Data.NewTitle;
+			$("#title").val(res.Data.NewTitle);
+			$("#sub_title").val(res.Data.SubTitle);
 
-						//绑定展示图
-						var imgs=res.Data.ListImg;
-						imgs=imgs.split(',');
-						if(imgs.length>0){
-							imgs.forEach(element => {
-								addImgBlock(element);
-							});
-						}
-						
-						//绑定面料图
+			//由于获取产品分类是异步，所以推迟350ms绑定产品所属系列
+			setTimeout(function () {
+				$("#series option[value=\"" + res.Data.ThemeID + "\"]").prop("selected", true); //如果值一样 就选中对应的option,
+			}, 350);
 
+			$("#description").val(res.Data.Discribe);
+			$("#price").val(res.Data.Price);
+			$("#color").val(res.Data.Color);
+			$("#size").val(res.Data.SizeInfo);
+			$("#scene").val(res.Data.Scene);
+			$("#concept").val(res.Data.DesignConcept);
 
+			//绑定封面图
+			$("#product_cover").attr("src", res.Data.CollectionImg);
+			$("#btn_add_poster").addClass("d-none");
+			$("#poster_select").next('.card').removeClass("d-none");
 
-						/*$("#poster").attr('src',res.Data.CollectionImg);
-						$("#intro").text(res.Data.Discribe);
-						$("#price").text("￥"+res.Data.Price+".00元");
-						$("#cloth_img").attr('src',res.Data.ImgList);
-						//轮播展示
-						var imgs=res.Data.ListImg;
-						imgs=imgs.split(',');
-						if(imgs.length>0){
-							
-						}
-						
-						$("#size").text(res.Data.SizeInfo);
-						$("#color").text(res.Data.Color);
-						$("#scene").text(res.Data.Scene);
-						$("#design_txt").text(res.Data.DesignConcept);
-						$("#cloth_info").text(res.Data.ClothInfo);
-						$("#info_img").attr('src',res.Data.Contents);*/
-									 
+			//绑定展示图
+			var imgs = res.Data.ListImg;
+			imgs = imgs.split(',');
+			if (imgs.length > 0) {
+				imgs.forEach(element => {
+					console.log(element);
+					let i=new Image();
+					i.setAttribute("crossOrigin",'*')
+					i.src=element;
+					i.onload=function(){
+						getBase64Image(i);
 					}
-				})
+				});
+			}
+
+			//绑定面料图和面料信息
+			$("#cloth_img").attr("src", res.Data.ImgList);
+			$("#btn_add_cloth").addClass("d-none");
+			$("#btn_add_cloth").next('.card').removeClass("d-none");
+			$("#cloth_text").val(res.Data.ClothInfo);
+
+			//绑定详情阶段
+			$("#info_img").attr('src', res.Data.Contents);
+			$("#btn_add_info").addClass('d-none').next().removeClass('d-none');
+		}
+	})
 }
 
-
-
-
-
-
-
+function getBase64Image(img) {
+	var canvas = document.createElement("canvas");
+	canvas.width = img.width;
+	canvas.height = img.height;
+	var ctx = canvas.getContext("2d");
+	ctx.drawImage(img, 0, 0, img.width, img.height);
+	var dataURL = canvas.toDataURL("image/png");
+	return dataURL // return dataURL.replace("data:image/png;base64,", ""); 
+}
 
