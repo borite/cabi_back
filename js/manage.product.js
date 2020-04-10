@@ -4,7 +4,7 @@ var productInfo={}
 var newID=-1;
 var i=0;
 var isEdit="";
-
+var scrollNum=0;
 
 
 $(function () {
@@ -484,6 +484,7 @@ function addProduct(){
 		});
 
 		var img= $("#product_cover").attr("src");
+		console.log(img);
 		var Ext="";
 		
 		var businessParam = {
@@ -492,23 +493,49 @@ function addProduct(){
         };	
 	
 		if(isEdit=="edit"){
-			
+			$("#up_content").text('更新信息');
 			//产品封面图修改
 			var coverImgUpdate;
-			
 			var imgList;
-			
-			if (img.indexOf('http://') == -1 || img.indexOf('https://') == -1) {
+			//更新封面图
+			if (img.indexOf('http://') == -1 && img.indexOf('https://') == -1) {
 					Ext = img.substr(11, 3);
 					$.post("https://customer.imotstudio.net/cabi/api/UpdateCollection",businessParam).done(function(res){
 					console.log("上传产品封面图：",res);
 					var result=JSON.parse(res);
 					if(result.code==200){
-						$("#up_content").text('展示图');
 						
 					}
 				})
 			}
+			
+			//更新滚动展示图
+			if($("#zs_pics img.zs").length>0){
+				businessParam.imgs=[];
+				$("#zs_pics img.zs").each(function(i,o){
+						img=$(o).attr('src');
+						Ext=img.substr(11,3);
+						var img={ext:Ext,baseURL:img};
+						businessParam.imgs.push(img);
+				});
+				$.post("https://customer.imotstudio.net/cabi/api/productList",businessParam).done(function(res){
+					console.log("上传滚动展示图：",res);
+				});
+			}
+			
+			//更新面料信息
+		    if($("#cloth_img").attr("src").indexOf("http://")==-1 && $("#cloth_img").attr("src").indexOf("https://")==-1){
+				let c_img=$("#cloth_img").attr("src");
+			    businessParam.imgs=[];
+				businessParam.imgs.push(c_img);
+				businessParam['intro']=$("#cloth_text").val();
+				console.log(businessParam);
+				$.post("https://customer.imotstudio.net/cabi/api/UpdateClothInfoIMG",businessParam).done(function(res){
+					console.log("更新面料信息",res);
+				});
+			}
+			
+			
 		}else{
 			Ext=img.substr(11,3)
 			//上传封面图
@@ -624,15 +651,20 @@ function BindProductInfo() {
 			//绑定展示图
 			var imgs = res.Data.ListImg;
 			imgs = imgs.split(',');
+			scrollNum=imgs.length;
+			
 			if (imgs.length > 0) {
 				imgs.forEach(element => {
-					console.log(element);
-					let i=new Image();
-					i.setAttribute("crossOrigin",'*')
-					i.src=element;
-					i.onload=function(){
-						getBase64Image(i);
-					}
+					let u=element.replace('http://','https://');
+					console.log(u);
+					let imgInit=new Image();
+					imgInit.src=u;
+					imgInit.setAttribute("crossOrigin",'anonymous');
+					imgInit.onload = function () {
+						var b64 = getBase64Image(imgInit);
+					    //console.log(b64);
+						addImgBlock(b64);
+					}	
 				});
 			}
 
@@ -649,13 +681,17 @@ function BindProductInfo() {
 	})
 }
 
-function getBase64Image(img) {
-	var canvas = document.createElement("canvas");
-	canvas.width = img.width;
-	canvas.height = img.height;
-	var ctx = canvas.getContext("2d");
-	ctx.drawImage(img, 0, 0, img.width, img.height);
-	var dataURL = canvas.toDataURL("image/png");
-	return dataURL // return dataURL.replace("data:image/png;base64,", ""); 
-}
+
+        //var img = "http://127.0.0.1/base64/1.jpg";
+        function getBase64Image(img) {
+            var canvas = document.createElement("canvas");
+            canvas.width = img.width;
+            canvas.height = img.height;
+            var ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0, img.width, img.height);
+            var ext = img.src.substring(img.src.lastIndexOf(".") + 1).toLowerCase();
+			console.log(ext);
+            var dataURL = canvas.toDataURL("image/" + ext);
+            return dataURL;
+        }
 
