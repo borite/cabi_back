@@ -308,6 +308,12 @@
 					<script>
 						
 						$(".nav > li:nth-child(4)").addClass('active');
+						var e=GetQueryString("act");
+						var id=GetQueryString("pid");
+						if(e==""|| id==""){
+							alert("参数错误！");
+							location.replace("product_manage.html");
+						}
 					</script>
 					
 					<!-- InstanceEndEditable -->

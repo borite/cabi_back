@@ -21,7 +21,21 @@
 	  <script src="vendors/base/vendor.bundle.base.js"></script>
 	  <script src="js/common.js"></script>
 	  <!-- InstanceBeginEditable name="head" -->
-	 
+	  <style>
+		  
+		  th{
+			  font-size: 0.875rem !important;
+			  font-weight: bold !important;
+		  }
+		  
+		  tbody tr{
+			  font-size: 12px !important;
+		  }
+
+		  
+		
+		
+	  </style>
 	  <!-- InstanceEndEditable -->
 	</head>
 
@@ -131,7 +145,52 @@
 					
 					<div class="col-lg grid-margin stretch-card">
 					  <div class="card">
-						  <div class="card-body"></div>
+						  <div class="card-body">
+						  	  <h4 class="card-title">预约管理</h4>
+						      <div class="table-responsive">
+							  	  <table class="table">
+								  	  <thead>
+									    <tr>
+										  <th>序号</th>
+										  <th>客户姓名</th>
+										  <th>客户电话</th>
+										  <th>预约产品</th>
+										  <th>预约时间</th>
+										  <th>客户留言</th>
+										  <th>状态</th>
+										  <th>操作</th>
+										</tr>
+									  </thead>
+								  	  <tbody>
+										<tr>
+									  	  <td>1</td>
+									  	  <td>高高</td>
+									  	  <td>15024989852</td>
+									  	  <td>这里是产品名字</td>
+									  	  <td>2020-5-20 15:00</td>
+									  	  <td>客户留言：哈哈哈</td>
+									  	  <td>未到店</td>
+									  	  <td>
+											  <button id="btn_down_'+o.ID+'" data-tid="'+o.ID+'" class="btn btn-warning btn-sm btn-down" style="font-size:0.75rem; line-height:0.75rem;" onclick="updown('+o.ID+',0)">下架</button>
+ 											  <a href="edit_product.html?act=edit&pid='+o.ID+'" class="btn btn-sm btn-info ml-3 btn-del" style="font-size:0.75rem; line-height:0.75rem; color:#fff;">修改</a>
+											  <button id="del_'+o.ID+'" data-tid="'+o.ID+'" class="btn btn-sm btn-danger ml-3 btn-del" style="font-size:0.75rem; line-height:0.75rem;" onclick="del('+o.ID+')">删除</button></td>
+									  	</tr>
+										<tr>
+									  	  <td>1</td>
+									  	  <td>高高</td>
+									  	  <td>15024989852</td>
+									  	  <td>这里是产品名字</td>
+									  	  <td>2020-5-20 15:00</td>
+									  	  <td>客户留言：哈哈哈</td>
+									  	  <td>未到店</td>
+									  	  <td></td>
+									  	</tr>
+									  </tbody>
+								  
+								  </table>
+							  
+							  </div>
+						  </div>
 					  </div>
 					</div>
 					
