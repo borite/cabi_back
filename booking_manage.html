@@ -5,8 +5,8 @@
 	  <meta charset="utf-8">
 	  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	  <!-- InstanceBeginEditable name="doctitle" -->
-	  <title>预约管理</title>
-	  <!-- InstanceEndEditable -->
+      <title>预约管理</title>
+      <!-- InstanceEndEditable -->
 	  <!-- plugins:css -->
 	  <link rel="stylesheet" href="vendors/mdi/css/materialdesignicons.min.css">
 	  <link rel="stylesheet" href="vendors/base/vendor.bundle.base.css">
@@ -21,22 +21,99 @@
 	  <script src="vendors/base/vendor.bundle.base.js"></script>
 	  <script src="js/common.js"></script>
 	  <!-- InstanceBeginEditable name="head" -->
-	  <style>
+      <link rel="stylesheet" href="css/pagination.css">
+      <script src="js/pagination.min.js"></script>
+      <script>
+		
+		  var page_index=1,page_size=20;
+		  var totalPage;
 		  
-		  th{
-			  font-size: 0.875rem !important;
-			  font-weight: bold !important;
+		  $(function(){
+			  BindBookingInfo(page_index);
+			  
+			 //设置分页
+			$("#pagination").whjPaging({
+				css: 'css-1',
+				showPageNum: 5,
+				isShowFL:true,
+				isShowPageSizeOpt: false,
+				isShowSkip: false,
+				isShowRefresh: false,
+				callBack: function (currPage, pageSize) {
+					  BindBookingInfo(currPage);
+					}
+				});	
+			  
+			  
+		  })
+		
+		  function BindBookingInfo(cpage){
+			  $.post('https://customer.imotstudio.net/cabi/api/AdminOrderList1',{"pageSize": page_size,"pageIndex": cpage}).done(function(res){
+				  console.log(res);
+				 if(res.Code==200){
+					 $("#list_body").empty();
+					 
+					 if(res.Data.total>0){
+						 totalPage=getTotalPages(page_size,res.Data.total);
+						
+						 $("#pagination").whjPaging("setPage", cpage, totalPage);
+								
+						 console.log(totalPage);
+						 let list=res.Data.list;
+						 list.forEach(function(o,i){
+							 var temp=`<tr>
+									  	  <td>${i+1}</td>
+									  	  <td>${o.OrderName}</td>
+									  	  <td>${o.OrderPhone}</td>
+									  	  <td><a target="_blank" href="preview.html?pid=${o.OrderProductID}">${o.OrderProduct}</a></td>
+									  	  <td>${formatDateTime(o.OrderTime)}</td>
+									  	  <td>${o.Description}</td>
+									  	  <td id="o${o.OrderID}">${getText(o.OrderContact)}</td>
+									  	  <td>
+											  <button id="btn_down_'+o.ID+'" data-tid="'+o.ID+'" class="btn btn-success btn-sm btn-down" style="font-size:0.75rem; line-height:0.75rem;" onclick="updateState(${o.OrderID},2)">完成</button>
+											  <button id="del_'+o.ID+'" data-tid="'+o.ID+'" class="btn btn-sm btn-danger ml-3 btn-del" style="font-size:0.75rem; line-height:0.75rem;" onclick="updateState(${o.OrderID},3)">取消</button></td>
+									  	</tr>`;
+							 $("#list_body").append(temp);
+						 })
+					 }
+				 }
+				 
+			  });
 		  }
 		  
-		  tbody tr{
-			  font-size: 12px !important;
+		  //预约状态（1.待试衣2.订单完成3.订单失效）
+		  function getText(state){
+			  if(state=="1"){
+				  return "待试衣"
+			  }
+			  if(state=="2"){
+				  return "已试衣"
+			  }
+			  if(state=="3"){
+				  return "取消预约"
+			  }
 		  }
-
 		  
+		  //更新订单状态，oid：订单ID，StateNum：状态代码
+		 function updateState(Oid,StateNum){
+			 $.post("https://customer.imotstudio.net/cabi/api/UpdateOrderState",{oid:Oid,num:StateNum}).done(function(res){
+				 if(res.Code==200){
+					 $("#o"+Oid).text(getText(StateNum));
+				 }
+			 })
+		 }
 		
-		
-	  </style>
-	  <!-- InstanceEndEditable -->
+	  </script>
+      <style>
+th {
+	font-size: 0.875rem !important;
+	font-weight: bold !important;
+}
+tbody td {
+	font-size: 12px !important;
+}
+</style>
+      <!-- InstanceEndEditable -->
 	</head>
 
 	<body>
@@ -59,14 +136,14 @@
 
 				  <li class="nav-item nav-profile dropdown">
 					<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-					  <span class="nav-profile-name">这里是用户名</span>
+					  <span id="admin_name" class="nav-profile-name">这里是用户名</span>
 					</a>
 					<div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
 					  <a class="dropdown-item">
 						<i class="mdi mdi-settings text-primary"></i>
 						修改密码
 					  </a>
-					  <a class="dropdown-item">
+					  <a id="exit_log" class="dropdown-item">
 						<i class="mdi mdi-logout text-primary"></i>
 						退出登录
 					  </a>
@@ -83,7 +160,7 @@
 			  <nav class="sidebar sidebar-offcanvas" id="sidebar">
 				<ul class="nav">
 				  <li class="nav-item">
-					<a class="nav-link" href="manage.html">
+					<a class="nav-link" href="manageindex.html">
 					  <i class="mdi mdi-home menu-icon"></i>
 					  <span class="menu-title">首页</span>
 					</a>
@@ -142,61 +219,36 @@
 			  <div class="main-panel">
 				<div class="content-wrapper">
 					<!-- InstanceBeginEditable name="ConetentArea" -->
-					
-					<div class="col-lg grid-margin stretch-card">
-					  <div class="card">
-						  <div class="card-body">
-						  	  <h4 class="card-title">预约管理</h4>
-						      <div class="table-responsive">
-							  	  <table class="table">
-								  	  <thead>
-									    <tr>
-										  <th>序号</th>
-										  <th>客户姓名</th>
-										  <th>客户电话</th>
-										  <th>预约产品</th>
-										  <th>预约时间</th>
-										  <th>客户留言</th>
-										  <th>状态</th>
-										  <th>操作</th>
-										</tr>
-									  </thead>
-								  	  <tbody>
-										<tr>
-									  	  <td>1</td>
-									  	  <td>高高</td>
-									  	  <td>15024989852</td>
-									  	  <td>这里是产品名字</td>
-									  	  <td>2020-5-20 15:00</td>
-									  	  <td>客户留言：哈哈哈</td>
-									  	  <td>未到店</td>
-									  	  <td>
-											  <button id="btn_down_'+o.ID+'" data-tid="'+o.ID+'" class="btn btn-warning btn-sm btn-down" style="font-size:0.75rem; line-height:0.75rem;" onclick="updown('+o.ID+',0)">下架</button>
- 											  <a href="edit_product.html?act=edit&pid='+o.ID+'" class="btn btn-sm btn-info ml-3 btn-del" style="font-size:0.75rem; line-height:0.75rem; color:#fff;">修改</a>
-											  <button id="del_'+o.ID+'" data-tid="'+o.ID+'" class="btn btn-sm btn-danger ml-3 btn-del" style="font-size:0.75rem; line-height:0.75rem;" onclick="del('+o.ID+')">删除</button></td>
-									  	</tr>
-										<tr>
-									  	  <td>1</td>
-									  	  <td>高高</td>
-									  	  <td>15024989852</td>
-									  	  <td>这里是产品名字</td>
-									  	  <td>2020-5-20 15:00</td>
-									  	  <td>客户留言：哈哈哈</td>
-									  	  <td>未到店</td>
-									  	  <td></td>
-									  	</tr>
-									  </tbody>
-								  
-								  </table>
-							  
-							  </div>
-						  </div>
-					  </div>
-					</div>
-					
-					
-					
-					<!-- InstanceEndEditable -->
+              <div class="col-lg grid-margin stretch-card">
+              <div class="card">
+                  <div class="card-body">
+                  <h4 class="card-title">预约管理</h4>
+                  <div class="table-responsive">
+                      <table class="table table-hover">
+                      <thead>
+                          <tr>
+                          <th>序号</th>
+                          <th>客户姓名</th>
+                          <th>客户电话</th>
+                          <th>预约产品</th>
+                          <th>预约时间</th>
+                          <th>客户留言</th>
+                          <th>状态</th>
+                          <th>操作</th>
+                        </tr>
+                        </thead>
+                      <tbody id="list_body">
+                          <tr>
+                            <td>正在加载...</td>
+                          </tr>
+                      </tbody>
+                    </table>
+                    </div>
+                  <div id="pagination"></div>
+                </div>
+                </div>
+            </div>
+              <!-- InstanceEndEditable -->
 				</div>
 				
 				<footer id="footer_rights">

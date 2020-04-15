@@ -32,7 +32,9 @@
 				 $.post("https://customer.imotstudio.net/cabi/api/AdminLogin",{ Account:uname, Password:pwd  }).done(function(res){
 					 var r=JSON.parse(res);
 					 if(r.code=="203"){
-						 location.href="manage.html";
+						 location.replace("manageindex.html");
+						 sessionStorage.setItem('admin',uname);
+						 sessionStorage.setItem('isAuth','true');
 					 }else{
 						 $("#err_wrap").addClass('d-inline-flex').find('label').text('您输入的用户名或密码错误');
 					 }

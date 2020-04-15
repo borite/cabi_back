@@ -20,7 +20,7 @@
 	  <link rel="shortcut icon" href="images/favicon.png" />
 	  <script src="vendors/base/vendor.bundle.base.js"></script>
 	  <script src="js/common.js"></script>
-	  <!-- InstanceBeginEditable name="head" -->
+	  <!-- InstanceBeginEditable name="head" -->		
 	  <!-- InstanceEndEditable -->
 	</head>
 
@@ -44,14 +44,14 @@
 
 				  <li class="nav-item nav-profile dropdown">
 					<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-					  <span class="nav-profile-name">这里是用户名</span>
+					  <span id="admin_name" class="nav-profile-name">这里是用户名</span>
 					</a>
 					<div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
 					  <a class="dropdown-item">
 						<i class="mdi mdi-settings text-primary"></i>
 						修改密码
 					  </a>
-					  <a class="dropdown-item">
+					  <a id="exit_log" class="dropdown-item">
 						<i class="mdi mdi-logout text-primary"></i>
 						退出登录
 					  </a>
@@ -68,7 +68,7 @@
 			  <nav class="sidebar sidebar-offcanvas" id="sidebar">
 				<ul class="nav">
 				  <li class="nav-item">
-					<a class="nav-link" href="manage.html">
+					<a class="nav-link" href="manageindex.html">
 					  <i class="mdi mdi-home menu-icon"></i>
 					  <span class="menu-title">首页</span>
 					</a>
@@ -132,8 +132,8 @@
 						  <div class="d-flex justify-content-between flex-wrap">
 							<div class="d-flex align-items-end flex-wrap">
 							  <div class="mr-md-3 mr-xl-5">
-								<h2>欢迎回来,</h2>
-								<p class="mb-md-0">您的相关数据如下</p>
+								<h2>欢迎回来,<span id="index_admin_name" style="color: #1870E9"></span></h2>
+								<p class="mb-md-0">察必相关数据如下</p>
 							  </div>
 							</div>
 						  </div>
@@ -151,13 +151,13 @@
 								  <div class="tab-content py-0 px-0">
 									<div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
 									  <div class="d-flex flex-wrap justify-content-xl-between">
-										<div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
+<!--										<div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
 										  <i class="mdi mdi-account-box icon-lg mr-3 text-primary"></i>
 										  <div class="d-flex flex-column justify-content-around">
 											<small class="mb-1 text-muted">用户信息量</small>
 											<h5 class="mr-2 mb-0">3250</h5>
 										  </div>
-										</div>
+										</div>-->
 										<div class="d-flex py-3 border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
 										  <i class="mdi mdi-format-list-numbers mr-3 icon-lg text-danger"></i>
 										  <div class="d-flex flex-column justify-content-around">
@@ -196,8 +196,18 @@
 								</div>
 							  </div>
 							</div>
-						  </div>
-				  
+					  </div>
+					
+					  <!--这里是各个表-->
+					  <div class="row">
+						<div class="col-3">
+						  
+						  
+						</div>
+					
+					
+					
+					  </div>
 					<!-- InstanceEndEditable -->
 				</div>
 				

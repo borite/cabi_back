@@ -1,6 +1,27 @@
 // JavaScript Document
 
 
+$(function(){
+	//sessionStorage.setItem('admin',uname);
+	//sessionStorage.setItem('isAuth','true');
+	var isAuth=sessionStorage.getItem('isAuth');
+	if(isAuth==null){
+		location.replace('index.html');
+	}
+	
+	var admin=sessionStorage.getItem('admin');
+	
+	$("#admin_name,#index_admin_name").text(admin);
+	
+	$("#exit_log").click(function(){
+		sessionStorage.clear();
+		location.replace('index.html');
+	})
+	
+})
+
+
+
 //要上传的图片url JSON数组
 var imgurl=null;
 
@@ -9,6 +30,12 @@ var imgurl=null;
 function formatTime(dtime){
 	var shortTime=dtime.substr(0,10);
 	return shortTime;
+}
+
+//格式化时间和日期
+function formatDateTime(dt){
+	var t=dt.replace('T',' ');
+	return t;
 }
 
 
@@ -37,6 +64,8 @@ function GetQueryString(name) {
   r = null; 
   return context == null || context == "" || context == "undefined" ? "" : context; 
 }
+
+
 
 
 

@@ -45,14 +45,14 @@
 
 				  <li class="nav-item nav-profile dropdown">
 					<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-					  <span class="nav-profile-name">这里是用户名</span>
+					  <span id="admin_name" class="nav-profile-name">这里是用户名</span>
 					</a>
 					<div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
 					  <a class="dropdown-item">
 						<i class="mdi mdi-settings text-primary"></i>
 						修改密码
 					  </a>
-					  <a class="dropdown-item">
+					  <a id="exit_log" class="dropdown-item">
 						<i class="mdi mdi-logout text-primary"></i>
 						退出登录
 					  </a>
@@ -69,7 +69,7 @@
 			  <nav class="sidebar sidebar-offcanvas" id="sidebar">
 				<ul class="nav">
 				  <li class="nav-item">
-					<a class="nav-link" href="../manage.html">
+					<a class="nav-link" href="../manageindex.html">
 					  <i class="mdi mdi-home menu-icon"></i>
 					  <span class="menu-title">首页</span>
 					</a>
