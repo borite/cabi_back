@@ -27,6 +27,7 @@
 			  getTypeList();
 		  })
 		  
+		  
 		  function BindData(){
 			  $.get('https://customer.imotstudio.net/cabi/api/GetBackData').done(function(res){
 				  if(res.Code==200){
@@ -55,6 +56,7 @@
 		  }
 		  
 		  
+		  //获取产品系列列表
 		  function getTypeList(){
 				$.get("https://customer.imotstudio.net/cabi/api/product/GetProductTypeForBack").done(function(res){			
 					if(res.Code=="200"){
@@ -307,7 +309,7 @@
 						<div class="col-md-6 grid-margin stretch-card">
 						  <div class="card">
 							<div class="card-body">
-							  <p class="card-title">最新客户预约</p>
+							  <p class="card-title">最新客户预约Top 5</p>
 							  <p class="mb-4">最新客户预约信息</p>
 							  <canvas id="cash-deposits-chart"></canvas>
 							</div>
