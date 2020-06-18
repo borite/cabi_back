@@ -33,9 +33,16 @@ function formatTime(dtime){
 }
 
 //格式化时间和日期
-function formatDateTime(dt){
-	var t=dt.replace('T',' ');
-	return t;
+function formatDateTime(timeStr){
+	if (timeStr != null) {
+            //Sql返回时间字符串 2020-02-28T15:50:12.273
+            let date = timeStr.split('T')[0];
+            let time = timeStr.split('T')[1];
+            time = time.split('.')[0];
+        
+            return date + ' ' + time;
+        }
+        return 'No Date';
 }
 
 
@@ -110,3 +117,18 @@ function GetQueryString(name) {
 
 
  }
+
+
+
+//退出登录
+function logout(){
+	sessionStorage.removeItem('isAuth')
+	location.replace('index.html');
+}
+
+
+
+
+
+
+

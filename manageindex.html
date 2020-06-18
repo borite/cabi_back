@@ -19,12 +19,15 @@
 	  <!-- endinject -->
 	  <link rel="shortcut icon" href="images/favicon.png" />
 	  <script src="vendors/base/vendor.bundle.base.js"></script>
+	  <script src="js/jquery.poplayer.js"></script>
 	  <script src="js/common.js"></script>
 	  <!-- InstanceBeginEditable name="head" -->	
 	  <script>
 		  $(function(){
 			  BindData();
 			  getTypeList();
+			  getOrderList();
+			  getCollectionTop5();
 		  })
 		  
 		  
@@ -42,14 +45,11 @@
 							  var html='<tr>\
 											 <td style="font-size: 12px;">'+(i+1)+'</td>\
 											 <td style="font-size: 12px;">'+o.NewTitle+'</td>\
-											 <td style="font-size: 12px;">'+o.AddTime+'</td>\
+											 <td style="font-size: 12px;">'+formatDateTime(o.AddTime)+'</td>\
 										 </tr>';
 							  $("#prolist").append(html);
 						  });
-					  }
-					  
-					  
-					  
+					  } 
 				  }
 			  })
 			  
@@ -78,16 +78,64 @@
 					}
 				})	
 			}
+
+		  //获取预约列表
+		  function getOrderList(){
+			 $.get("https://customer.imotstudio.net/cabi/api/product/GetUserBooking").done(function(res){
+				
+				 if(res.Code=="200"){
+						if(res.Data.length>0){
+							$("#orderlist").empty();
+							$.each(res.Data,function(i,o){
+								var html='<tr>\
+											 <td style="font-size: 12px;">'+(i+1)+'</td>\
+											 <td style="font-size: 12px;">'+o.OrderName+'</td>\
+											 <td style="font-size: 12px;">'+o.OrderPhone+'</td>\
+											<td style="font-size: 12px;">'+formatDateTime(o.OrderTime)+'</td>\
+										 </tr>';
+								$("#orderlist").append(html);
+							});
+										
+						}else{
+							var h='<tr><td>您还没有任分类</td></tr>';
+							$("#list_table").append(h);
+						}
+					}
+			 })  
+		  }
 		  
 		  
-		  
-		  	
+		  //获取收藏数量最高的5款产品
+		  function getCollectionTop5(){
+			  $.get("https://customer.imotstudio.net/cabi/api/product/GetColloctionTop5").done(function(res){
+				 console.log(res);
+				 if(res.Code=="200"){
+						if(res.Data.length>0){
+							$("#collectionlist").empty();
+							$.each(res.Data,function(i,o){
+								var html='<tr>\
+											 <td style="font-size: 12px;">'+(i+1)+'</td>\
+											 <td style="font-size: 12px;"><img style="width:42px; height:auto; border-radius:0;" src="'+o.CollectionImg+'"/><span style="padding-left:10px;">'+o.NewTitle+'</span></td>\
+											 <td style="font-size: 12px;">'+o.Title+'</td>\
+											<td style="font-size: 12px;">'+o.CollectionNum+'</td>\
+										 </tr>';
+								$("#collectionlist").append(html);
+							});
+										
+						}else{
+							var h='<tr><td>您还没有任分类</td></tr>';
+							$("#collectionlist").append(h);
+						}
+					}
+			 }) 
+		  }
+		   	
 	  </script>
 		
 		
 	  <!-- InstanceEndEditable -->
 	</head>
-
+ 
 	<body>
 		
 		<div class="container-scroller">
@@ -111,11 +159,11 @@
 					  <span id="admin_name" class="nav-profile-name">这里是用户名</span>
 					</a>
 					<div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-					  <a class="dropdown-item">
+					  <a class="dropdown-item" onClick="showModPwd()">
 						<i class="mdi mdi-settings text-primary"></i>
-						修改信息
+						修改密码
 					  </a>
-					  <a id="exit_log" class="dropdown-item">
+					  <a id="exit_log" class="dropdown-item" onClick="logout()">
 						<i class="mdi mdi-logout text-primary"></i>
 						退出登录
 					  </a>
@@ -179,8 +227,8 @@
 					</a>
 					<div class="collapse" id="auth">
 					  <ul class="nav flex-column sub-menu">
-						<li class="nav-item"> <a class="nav-link" href="pages/samples/login.html">修改信息</a></li>
-						<li class="nav-item"> <a class="nav-link" href="pages/samples/login-2.html">退出登录</a></li>
+						<li class="nav-item"> <a class="nav-link" href="#" onClick="showModPwd()" >修改登录密码</a></li>
+						<li class="nav-item"> <a class="nav-link" href="#" onClick="logout()">退出登录</a></li>
 					  </ul>
 					</div>
 				  </li>
@@ -286,7 +334,7 @@
 							<div class="card-body">
 							  <p class="card-title">产品SKU Top 5</p>
 							  <p class="text-muted">最新5款上线展示产品</p>
-							  <div id="total-sales-chart-legend"></div>   
+							 
 							  <div class="table-responsive">
 									<table class="table">
 									  <thead>
@@ -311,20 +359,52 @@
 							<div class="card-body">
 							  <p class="card-title">最新客户预约Top 5</p>
 							  <p class="mb-4">最新客户预约信息</p>
-							  <canvas id="cash-deposits-chart"></canvas>
+							  <div class="table-responsive">
+									<table id="order_top5" class="table">
+									  <thead>
+										<tr>
+											<th style="font-weight: bold; font-size: 14px;">#</th>
+											<th style="font-weight: bold; font-size: 14px;">客户名称</th>
+											<th style="font-weight: bold; font-size: 14px;">客户联系方式</th>
+											<th style="font-weight: bold; font-size: 14px;">预约试衣时间</th>
+										</tr>
+									  </thead>
+									  <tbody id="orderlist" style="color: #5E5E5E;">
+
+
+									  </tbody>
+									</table>
+							  </div>
 							</div>
 						  </div>
 						</div>
+						
 						<div class="col-md-6 grid-margin stretch-card">
 						  <div class="card">
 							<div class="card-body">
 							  <p class="card-title">收藏产品 Top 5</p>
 							  <p class="text-muted">用户收藏最多的5款产品</p>
-							  <div id="total-sales-chart-legend"></div>                  
+							  <div class="table-responsive">
+									<table id="collection_top5" class="table">
+									  <thead>
+										<tr>
+											<th style="font-weight: bold; font-size: 14px;">#</th>
+											<th style="font-weight: bold; font-size: 14px;">产品名称</th>
+											<th style="font-weight: bold; font-size: 14px;">所属系列</th>
+											<th style="font-weight: bold; font-size: 14px;">被收藏次数</th>
+										</tr>
+									  </thead>
+									  <tbody id="collectionlist" style="color: #5E5E5E;">
+
+
+									  </tbody>
+									</table>
+							  </div>
 							</div>
-							<canvas id="total-sales-chart"></canvas>
+						    
 						  </div>
 						</div>
+						
 					</div>	
 					<!-- InstanceEndEditable -->
 				</div>
@@ -340,6 +420,35 @@
 
 		</div>
 		
+		
+		
+		<!--弹出框-->
+		
+		<div id="mpwd_wrap">
+			<h4 class="title">修改管理员登录密码</h4>
+			<p style="margin-bottom: 14px;font-weight: 400;color: #76838f;">管理员密码修改后请重新登录</p>
+			<form class="forms-sample mt-2">
+				<div class="form-group">
+                    <label for="ipt_oldpwd">旧密码</label>
+                    <input type="password" class="form-control" id="ipt_oldpwd" placeholder="请输入旧密码">
+                </div>
+				<div class="form-group">
+                    <label for="ipt_oldpwd">新密码</label>
+                    <input type="password" class="form-control" id="ipt_newpwd" placeholder="请输入新密码，密码最少6位">
+                </div>
+				<div class="form-group">
+                    <label for="ipt_oldpwd">确认新密码</label>
+                    <input type="password" class="form-control" id="ipt_confirmpwd" placeholder="确认新密码">
+                </div>
+				<button id="btn_do_update" type="button" class="btn btn-primary btn-sm mr-2">确认</button>
+				<button type="button" class="btn btn-sm btn-light" onClick="closePop()">取消</button>
+			</form>
+		</div>
+		
+		
+		
+		
+		
 		<!-- container-scroller -->
 		<!-- plugins:js -->
 
@@ -350,6 +459,61 @@
 		<script src="js/off-canvas.js"></script>
 		<script src="js/hoverable-collapse.js"></script>
 		<script src="js/template.js"></script>
+		<script>
+			$("#btn_do_update").click(function(){
+				var oldpwd= $.trim($("#ipt_oldpwd").val());
+				var newpwd= $.trim($("#ipt_newpwd").val());
+				var c_newpwd=$.trim($("#ipt_confirmpwd").val());
+				
+				if(oldpwd=="" || oldpwd.length<6){
+					alert("请输入正确的旧密码");
+					return false;
+				}
+				
+				if(newpwd=="" || newpwd.length<6){
+					alert("请输入正确的新密码");
+					return false;
+				}
+				
+				if(c_newpwd=="" || newpwd!=c_newpwd){
+					alert("您的确认密码与新密码不一致");
+					return false;
+				}
+				
+				$.post("https://customer.imotstudio.net/cabi/api/UpdatePWD",{
+					  "OldPassword": oldpwd,
+					  "Password": newpwd,
+					  "ID": 1
+					}).done(function(res){
+					
+					if(res.Code==200){
+						alert('密码修改成功，请重新登录，请牢记新密码');
+						logout();
+					}else{
+						alert(res.Message);
+					}
+					
+				}).always(function(){
+					 $.closePopLayer();
+					
+				});
+				
+				
+			});
+			
+			function closePop(){
+				$.closePopLayer();
+			}
+			
+			function showModPwd(){
+				$.showPopLayer({
+					target:'mpwd_wrap',
+					animate:true
+					
+				})
+			}
+		
+		</script>
 		<!-- endinject -->
 		<!-- Custom js for this page-->
 		<!-- End custom js for this page-->

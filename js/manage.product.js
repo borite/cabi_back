@@ -554,6 +554,8 @@ function addProduct() {
 			console.log(res2);
 			console.log(res3);
 			console.log(res4);
+			alert("产品信息更新成功");
+			location.replace('product_manage.html');
 		}).always(function(){
 			$.closePopLayer();
 		})
